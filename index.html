@@ -99,6 +99,53 @@ a{color:inherit;text-decoration:none}
 .btn-add-note{font-size:12px;font-weight:700;padding:9px 20px;background:#1a1a18;color:#fff;border:none;border-radius:8px;cursor:pointer;align-self:flex-start;transition:opacity .15s;letter-spacing:.2px}
 .btn-add-note:hover{opacity:.8}
 
+/* CODE FEATURE */
+.code-tabs{display:flex;gap:0;border-bottom:1px solid #e8e6e0;margin-bottom:16px}
+.code-tab-btn{font-size:12px;font-weight:600;padding:9px 16px;border:none;background:none;cursor:pointer;color:#888;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .15s}
+.code-tab-btn.active{color:#1a1a18;border-bottom-color:#1a1a18}
+.code-block{background:#1a1a18;border-radius:10px;overflow:hidden;margin-bottom:12px;border:1px solid #333}
+.code-block-hdr{display:flex;align-items:center;justify-content:space-between;padding:9px 14px;background:#111;border-bottom:1px solid #333}
+.code-block-meta{display:flex;align-items:center;gap:10px}
+.code-block-lesson{font-size:11px;color:#888;font-weight:600}
+.code-block-title{font-size:12px;color:#ccc;font-weight:600}
+.code-block-actions{display:flex;gap:4px}
+.code-icon-btn{background:none;border:none;cursor:pointer;font-size:11px;color:#666;padding:3px 7px;border-radius:4px;transition:all .15s}
+.code-icon-btn:hover{color:#fff;background:#333}
+.code-icon-btn.del:hover{color:#ff6b6b}
+.code-pre{margin:0;padding:14px 16px;font-family:'Courier New',Consolas,monospace;font-size:12px;line-height:1.7;color:#e8e8e8;overflow-x:auto;white-space:pre;tab-size:2}
+.code-pre .kw{color:#c084fc}
+.code-pre .str{color:#86efac}
+.code-pre .cm{color:#6b7280;font-style:italic}
+.code-pre .num{color:#fbbf24}
+.code-pre .ann{color:#fb923c}
+.code-pre .cls{color:#67e8f9}
+.code-input-area{display:flex;flex-direction:column;gap:8px}
+.code-input-area input{font-size:13px;padding:9px 12px;border:1px solid #e8e6e0;border-radius:8px;background:#faf9f7;color:#1a1a18;font-family:inherit;outline:none;transition:border .15s}
+.code-input-area input:focus{border-color:#185FA5;background:#fff}
+.code-editor{width:100%;font-size:13px;padding:12px 14px;border:1px solid #e8e6e0;border-radius:8px;background:#1a1a18;color:#e8e8e8;font-family:'Courier New',Consolas,monospace;outline:none;resize:vertical;min-height:140px;line-height:1.7;transition:border .15s;tab-size:2;-webkit-appearance:none}
+.code-editor:focus{border-color:#534AB7}
+.code-lang-sel{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+.lang-btn{font-size:11px;padding:3px 12px;border-radius:20px;border:1.5px solid #e8e6e0;background:none;cursor:pointer;color:#888;font-weight:600;transition:all .15s}
+.lang-btn.sel{background:#1a1a18;color:#fff;border-color:#1a1a18}
+.btn-add-code{font-size:12px;font-weight:700;padding:9px 20px;background:#534AB7;color:#fff;border:none;border-radius:8px;cursor:pointer;align-self:flex-start;transition:opacity .15s;letter-spacing:.2px}
+.btn-add-code:hover{opacity:.8}
+.fullcode-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px}
+.fullcode-header h3{font-size:13px;font-weight:700;color:#1a1a18;text-transform:uppercase;letter-spacing:.5px}
+.fullcode-actions{display:flex;gap:8px;flex-wrap:wrap}
+.btn-fullcode{font-size:12px;font-weight:700;padding:8px 16px;border:none;border-radius:8px;cursor:pointer;transition:all .15s}
+.btn-fullcode.copy{background:#534AB7;color:#fff}
+.btn-fullcode.copy:hover{opacity:.8}
+.btn-fullcode.copy.copied{background:#1D9E75}
+.btn-fullcode.dl{background:#f0eeea;color:#1a1a18}
+.btn-fullcode.dl:hover{background:#e0dedc}
+.fullcode-filter{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.fc-filter-btn{font-size:11px;font-weight:600;padding:4px 12px;border-radius:20px;border:1.5px solid #e8e6e0;background:none;cursor:pointer;color:#888;transition:all .15s}
+.fc-filter-btn.active{background:#1a1a18;color:#fff;border-color:#1a1a18}
+.code-empty{text-align:center;padding:32px 16px;color:#bbb;font-size:13px;background:#f9f9f9;border-radius:10px;border:1px dashed #e0dedc}
+.code-edit-area{display:flex;flex-direction:column;gap:6px;padding:12px 14px;background:#111}
+.code-edit-area input{font-size:12px;padding:7px 10px;border:1.5px solid #534AB7;border-radius:6px;background:#1a1a18;color:#e8e8e8;font-family:inherit;outline:none}
+.code-edit-area textarea{font-size:12px;padding:10px 12px;border:1.5px solid #534AB7;border-radius:6px;background:#1a1a18;color:#e8e8e8;font-family:'Courier New',Consolas,monospace;outline:none;resize:vertical;min-height:100px;line-height:1.7}
+
 .notes-list{display:flex;flex-direction:column;gap:8px;margin-top:14px}
 .note-card{background:#faf9f7;border:1px solid #e8e6e0;border-radius:10px;padding:12px 14px}
 .note-card-hdr{display:flex;align-items:center;gap:8px;margin-bottom:6px}
@@ -549,6 +596,7 @@ a{color:inherit;text-decoration:none}
         <button class="ctab-btn active" onclick="setContentTab('visao')">Visão Geral</button>
         <button class="ctab-btn" onclick="setContentTab('aula')">Aula Atual</button>
         <button class="ctab-btn" onclick="setContentTab('notas')">Anotações</button>
+        <button class="ctab-btn" onclick="setContentTab('codigo')">💻 Código</button>
         <button class="ctab-btn" onclick="setContentTab('diario')">Diário</button>
       </div>
 
@@ -570,6 +618,11 @@ a{color:inherit;text-decoration:none}
       <!-- NOTAS GLOBAIS -->
       <div id="ctab-notas" class="ctab">
         <div id="global-notes-area"></div>
+      </div>
+
+      <!-- CODIGO COMPLETO -->
+      <div id="ctab-codigo" class="ctab">
+        <div id="global-code-area"></div>
       </div>
 
       <!-- DIARIO -->
@@ -612,8 +665,8 @@ a{color:inherit;text-decoration:none}
     <button class="bnav-btn" onclick="mSetScreen('stats')" id="bnav-stats">
       <span class="bnav-icon">📊</span>Progresso
     </button>
-    <button class="bnav-btn" onclick="mSetScreen('notas')" id="bnav-notas">
-      <span class="bnav-icon">📝</span>Notas
+    <button class="bnav-btn" onclick="mSetScreen('mcodigo')" id="bnav-mcodigo">
+      <span class="bnav-icon">💻</span>Código
     </button>
     <button class="bnav-btn" onclick="mSetScreen('diario')" id="bnav-diario">
       <span class="bnav-icon">📓</span>Diário
@@ -684,6 +737,11 @@ a{color:inherit;text-decoration:none}
       <div id="m-notes-list"></div>
     </div>
 
+    <!-- CODIGO COMPLETO mobile screen -->
+    <div class="m-screen" id="m-mcodigo" style="overflow-y:auto;padding:12px">
+      <div id="m-global-code-area"></div>
+    </div>
+
     <!-- DIARIO screen -->
     <div class="m-screen" id="m-diario" style="overflow-y:auto;padding:12px">
       <div class="m-log-form">
@@ -705,6 +763,11 @@ a{color:inherit;text-decoration:none}
         <button class="m-btn-log" onclick="mAddLog()">Registrar sessão ↗</button>
       </div>
       <div id="m-log-list"></div>
+    </div>
+
+    <!-- CODIGO screen (mobile) -->
+    <div class="m-screen" id="m-mcodigo" style="overflow-y:auto;padding:12px">
+      <div id="m-global-code-area"></div>
     </div>
 
   </div><!-- end mobile-layer -->
@@ -1024,10 +1087,11 @@ const SECTIONS = [
 const TOTAL_LESSONS = SECTIONS.reduce((s,sec)=>s+sec.lessons.length,0);
 
 let state = {
-  done: {},         // lessonKey -> bool
-  notes: {},        // lessonKey -> [{id,type,title,body,date}]
-  logs: [],         // [{id,date,hours,sec,desc}]
-  customTitles: {}, // lessonKey -> string (edited titles)
+  done: {},
+  notes: {},
+  codes: {},        // lessonKey -> [{id, lang, title, body, date, secId, lessonN}]
+  logs: [],
+  customTitles: {},
 };
 
 function lk(secId, n) { return secId + '_' + n; }
@@ -1045,6 +1109,7 @@ function loadState() {
       // ensure sub-objects
       if (!state.done) state.done = {};
       if (!state.notes) state.notes = {};
+      if (!state.codes) state.codes = {};
       if (!state.logs) state.logs = [];
       if (!state.customTitles) state.customTitles = {};
     }
@@ -1152,8 +1217,13 @@ function renderLessonDetail(secId, n) {
   const isDone = !!state.done[key];
   const title = state.customTitles[key] || lesson.t;
   const notes = state.notes[key] || [];
+  const codes = state.codes[key] || [];
 
   const area = document.getElementById('lesson-detail-area');
+  const curLessonTab = window._lessonTab || 'notas';
+  const curNoteType = window._noteType || 'tip';
+  const curLang = window._codeLang || 'java';
+
   area.innerHTML = `
     <div class="lesson-detail">
       <div class="ld-header">
@@ -1174,12 +1244,16 @@ function renderLessonDetail(secId, n) {
         </div>
       </div>
 
-      <div class="notes-area">
-        <div class="notes-hdr">
-          <h3>Anotações desta aula (${notes.length})</h3>
-        </div>
+      <!-- Sub-tabs: Anotações | Código -->
+      <div class="code-tabs">
+        <button class="code-tab-btn ${curLessonTab==='notas'?'active':''}" onclick="setLessonTab('notas','${secId}',${n})">📝 Anotações (${notes.length})</button>
+        <button class="code-tab-btn ${curLessonTab==='codigo'?'active':''}" onclick="setLessonTab('codigo','${secId}',${n})">💻 Código (${codes.length})</button>
+      </div>
+
+      <!-- NOTAS panel -->
+      <div id="lesson-panel-notas" style="display:${curLessonTab==='notas'?'block':'none'}">
         <div class="note-type-btns" id="nt-btns">
-          <button class="ntb sel-tip" data-type="tip" onclick="setNoteType(this,'${key}')">💡 Dica</button>
+          <button class="ntb" data-type="tip" onclick="setNoteType(this,'${key}')">💡 Dica</button>
           <button class="ntb" data-type="doubt" onclick="setNoteType(this,'${key}')">❓ Dúvida</button>
           <button class="ntb" data-type="important" onclick="setNoteType(this,'${key}')">⭐ Importante</button>
           <button class="ntb" data-type="concept" onclick="setNoteType(this,'${key}')">📖 Conceito</button>
@@ -1193,14 +1267,41 @@ function renderLessonDetail(secId, n) {
           ${renderNotesHTML(key)}
         </div>
       </div>
+
+      <!-- CÓDIGO panel -->
+      <div id="lesson-panel-codigo" style="display:${curLessonTab==='codigo'?'block':'none'}">
+        <div class="code-lang-sel" id="lang-btns">
+          ${['java','sql','xml','bash','json'].map(l=>`<button class="lang-btn ${curLang===l?'sel':''}" data-lang="${l}" onclick="setCodeLang(this)">${l.toUpperCase()}</button>`).join('')}
+        </div>
+        <div class="code-input-area" style="margin-bottom:12px">
+          <input type="text" id="code-title-inp" placeholder="Título do trecho (ex: Classe Produto, método main...)" />
+          <textarea class="code-editor" id="code-body-inp" placeholder="// Cole ou escreva seu código aqui...&#10;public class Main {&#10;    public static void main(String[] args) {&#10;        System.out.println(&quot;Hello Java!&quot;);&#10;    }&#10;}"></textarea>
+          <button class="btn-add-code" onclick="addCode('${key}')">+ Salvar trecho de código</button>
+        </div>
+        <div id="codes-list-${key}">
+          ${renderCodesHTML(key, secId, n)}
+        </div>
+      </div>
     </div>`;
 
-  // restore note type selection
-  const savedType = window._noteType || 'tip';
+  // restore note type buttons
   document.querySelectorAll('#nt-btns .ntb').forEach(b => {
     b.className = 'ntb';
-    if (b.dataset.type === savedType) b.classList.add('sel-' + savedType);
+    if (b.dataset.type === curNoteType) b.classList.add('sel-' + curNoteType);
   });
+}
+
+function setLessonTab(tab, secId, n) {
+  window._lessonTab = tab;
+  document.getElementById('lesson-panel-notas').style.display = tab === 'notas' ? 'block' : 'none';
+  document.getElementById('lesson-panel-codigo').style.display = tab === 'codigo' ? 'block' : 'none';
+  document.querySelectorAll('.code-tab-btn').forEach((b,i) => b.classList.toggle('active', ['notas','codigo'][i] === tab));
+}
+
+function setCodeLang(btn) {
+  window._codeLang = btn.dataset.lang;
+  document.querySelectorAll('#lang-btns .lang-btn').forEach(b => b.classList.remove('sel'));
+  btn.classList.add('sel');
 }
 
 function editLessonTitle(secId, n) {
@@ -1350,8 +1451,303 @@ function deleteNote(key, id) {
 }
 
 // ============================================================
-// GLOBAL NOTES TAB
+// CODE FUNCTIONS
 // ============================================================
+
+const LANG_COLORS = { java:'#f89820', sql:'#336791', xml:'#e44d26', bash:'#4eaa25', json:'#cbcb41' };
+
+function syntaxHighlight(code, lang) {
+  if (lang !== 'java') return escHtml(code);
+  return escHtml(code)
+    .replace(/\/\/.*/g, m => `<span class="cm">${m}</span>`)
+    .replace(/\/\*[\s\S]*?\*\//g, m => `<span class="cm">${m}</span>`)
+    .replace(/"([^"]*)"/g, m => `<span class="str">${m}</span>`)
+    .replace(/\b(public|private|protected|class|interface|extends|implements|new|return|void|static|final|abstract|if|else|for|while|do|switch|case|break|continue|try|catch|finally|throw|throws|import|package|this|super|null|true|false|instanceof|enum|record|var|int|long|double|float|boolean|char|byte|short|String)\b/g, m => `<span class="kw">${m}</span>`)
+    .replace(/\b(\d+\.?\d*[fLdF]?)\b/g, m => `<span class="num">${m}</span>`)
+    .replace(/@\w+/g, m => `<span class="ann">${m}</span>`);
+}
+
+function escHtml(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function renderCodesHTML(key, secId, n) {
+  const codes = state.codes[key] || [];
+  if (!codes.length) return `<div class="code-empty">Nenhum trecho de código salvo nesta aula.<br>Adicione trechos acima para construir seu código completo!</div>`;
+  return codes.map(c => `
+    <div class="code-block" id="cb-${c.id}">
+      <div class="code-block-hdr">
+        <div class="code-block-meta">
+          <span style="font-size:10px;font-weight:800;padding:2px 8px;border-radius:10px;background:${LANG_COLORS[c.lang]||'#666'}22;color:${LANG_COLORS[c.lang]||'#aaa'}">${(c.lang||'java').toUpperCase()}</span>
+          <span class="code-block-title">${c.title||'Trecho de código'}</span>
+        </div>
+        <div class="code-block-actions">
+          <button class="code-icon-btn" onclick="copyCode(${c.id},'cb-${c.id}')" title="Copiar">📋</button>
+          <button class="code-icon-btn" onclick="editCode('${key}',${c.id},'${secId}',${n})" title="Editar">✏️</button>
+          <button class="code-icon-btn del" onclick="deleteCode('${key}',${c.id},'${secId}',${n})" title="Excluir">✕</button>
+        </div>
+      </div>
+      <pre class="code-pre">${syntaxHighlight(c.body, c.lang||'java')}</pre>
+    </div>`).join('');
+}
+
+function addCode(key) {
+  const titleEl = document.getElementById('code-title-inp');
+  const bodyEl  = document.getElementById('code-body-inp');
+  const title = titleEl?.value.trim();
+  const body  = bodyEl?.value.trim();
+  if (!body) return;
+  if (!state.codes[key]) state.codes[key] = [];
+  const [secId, nStr] = key.split('_');
+  const n = parseInt(nStr);
+  const sec = SECTIONS.find(s => s.id === secId);
+  const lesson = sec?.lessons.find(l => l.n === n);
+  state.codes[key].push({
+    id: Date.now(),
+    lang: window._codeLang || 'java',
+    title: title || (lesson ? `Aula ${n} — trecho ${state.codes[key].length+1}` : 'Trecho'),
+    body,
+    date: new Date().toLocaleDateString('pt-BR'),
+    secId, lessonN: n,
+    secTitle: sec?.title || '',
+    lessonTitle: state.customTitles[key] || lesson?.t || '',
+  });
+  if (titleEl) titleEl.value = '';
+  if (bodyEl) bodyEl.value = '';
+  saveState();
+  const list = document.getElementById('codes-list-' + key);
+  if (list) list.innerHTML = renderCodesHTML(key, secId, n);
+  // refresh tab counter
+  renderLessonDetail(secId, n);
+  setLessonTab('codigo', secId, n);
+  renderGlobalCode();
+}
+
+function editCode(key, id, secId, n) {
+  const codes = state.codes[key] || [];
+  const c = codes.find(x => x.id === id);
+  if (!c) return;
+  const block = document.getElementById('cb-' + id);
+  if (!block) return;
+  block.innerHTML = `
+    <div class="code-block-hdr">
+      <span style="font-size:10px;font-weight:800;padding:2px 8px;border-radius:10px;background:${LANG_COLORS[c.lang]||'#666'}22;color:${LANG_COLORS[c.lang]||'#aaa'}">${(c.lang).toUpperCase()}</span>
+      <div class="code-block-actions">
+        <button class="code-icon-btn" onclick="saveEditCode('${key}',${id},'${secId}',${n})">💾 Salvar</button>
+        <button class="code-icon-btn" onclick="cancelEditCode('${key}','${secId}',${n})">✕ Cancelar</button>
+      </div>
+    </div>
+    <div class="code-edit-area">
+      <input id="ce-title-${id}" value="${escHtml(c.title)}" placeholder="Título do trecho..."/>
+      <textarea id="ce-body-${id}">${escHtml(c.body)}</textarea>
+    </div>`;
+}
+
+function saveEditCode(key, id, secId, n) {
+  const codes = state.codes[key] || [];
+  const c = codes.find(x => x.id === id);
+  if (!c) return;
+  const t = document.getElementById('ce-title-' + id);
+  const b = document.getElementById('ce-body-' + id);
+  if (t) c.title = t.value.trim() || c.title;
+  if (b) c.body  = b.value;
+  saveState();
+  renderLessonDetail(secId, parseInt(n));
+  setLessonTab('codigo', secId, parseInt(n));
+  renderGlobalCode();
+}
+
+function cancelEditCode(key, secId, n) {
+  renderLessonDetail(secId, parseInt(n));
+  setLessonTab('codigo', secId, parseInt(n));
+}
+
+function deleteCode(key, id, secId, n) {
+  if (!state.codes[key]) return;
+  state.codes[key] = state.codes[key].filter(c => c.id !== id);
+  saveState();
+  renderLessonDetail(secId, parseInt(n));
+  setLessonTab('codigo', secId, parseInt(n));
+  renderGlobalCode();
+}
+
+function copyCode(id, blockId) {
+  const pre = document.querySelector(`#${blockId} .code-pre`);
+  if (!pre) return;
+  navigator.clipboard.writeText(pre.innerText).then(() => {
+    const btn = pre.closest('.code-block')?.querySelector('.code-icon-btn');
+    if (btn) { btn.textContent = '✅'; setTimeout(() => btn.textContent = '📋', 1500); }
+  }).catch(() => {
+    const ta = document.createElement('textarea');
+    ta.value = pre.innerText; ta.style.position='fixed'; ta.style.opacity='0';
+    document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+    document.body.removeChild(ta);
+  });
+}
+
+// ============================================================
+// GLOBAL CODE TAB
+// ============================================================
+let globalCodeFilter = 'all'; // 'all' | secId
+
+function getAllCodes() {
+  let all = [];
+  SECTIONS.forEach(sec => {
+    sec.lessons.forEach(l => {
+      const key = lk(sec.id, l.n);
+      (state.codes[key] || []).forEach(c => {
+        all.push({ ...c, key, secId: sec.id, secNum: sec.num, secTitle: sec.title, lessonN: l.n, lessonTitle: state.customTitles[key] || l.t });
+      });
+    });
+  });
+  return all;
+}
+
+function renderGlobalCode() {
+  const area = document.getElementById('global-code-area');
+  if (!area) return;
+  const all = getAllCodes();
+  const filtered = globalCodeFilter === 'all' ? all : all.filter(c => c.secId === globalCodeFilter);
+
+  // Build full merged code per language
+  const langs = [...new Set(all.map(c => c.lang || 'java'))];
+  const curLang = window._globalCodeLang || langs[0] || 'java';
+  const mergedByLang = {};
+  langs.forEach(lang => {
+    const blocks = (globalCodeFilter === 'all' ? all : filtered).filter(c => (c.lang||'java') === lang);
+    mergedByLang[lang] = blocks;
+  });
+  const mergedBlocks = mergedByLang[curLang] || [];
+  const mergedCode = mergedBlocks.map(c =>
+    `// ── Aula ${c.lessonN}: ${c.lessonTitle} ──────────────\n// ${c.title}\n${c.body}`
+  ).join('\n\n');
+
+  // Section filter buttons
+  const secsWithCode = SECTIONS.filter(sec => sec.lessons.some(l => (state.codes[lk(sec.id,l.n)]||[]).length > 0));
+
+  area.innerHTML = `
+    <!-- Stats bar -->
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px">
+      <div style="background:#fff;border:1px solid #e8e6e0;border-radius:10px;padding:12px 16px;text-align:center;min-width:90px">
+        <div style="font-size:20px;font-weight:800;color:#1a1a18">${all.length}</div>
+        <div style="font-size:11px;color:#888;margin-top:2px">Trechos</div>
+      </div>
+      <div style="background:#fff;border:1px solid #e8e6e0;border-radius:10px;padding:12px 16px;text-align:center;min-width:90px">
+        <div style="font-size:20px;font-weight:800;color:#534AB7">${secsWithCode.length}</div>
+        <div style="font-size:11px;color:#888;margin-top:2px">Seções</div>
+      </div>
+      <div style="background:#fff;border:1px solid #e8e6e0;border-radius:10px;padding:12px 16px;text-align:center;min-width:90px">
+        <div style="font-size:20px;font-weight:800;color:#f89820">${langs.length}</div>
+        <div style="font-size:11px;color:#888;margin-top:2px">Linguagens</div>
+      </div>
+      <div style="background:#fff;border:1px solid #e8e6e0;border-radius:10px;padding:12px 16px;text-align:center;min-width:90px">
+        <div style="font-size:20px;font-weight:800;color:#1D9E75">${all.reduce((s,c)=>s+c.body.split('\n').length,0)}</div>
+        <div style="font-size:11px;color:#888;margin-top:2px">Linhas</div>
+      </div>
+    </div>
+
+    <!-- Section filter -->
+    ${secsWithCode.length > 0 ? `
+    <div class="fullcode-filter" style="margin-bottom:14px">
+      <button class="fc-filter-btn ${globalCodeFilter==='all'?'active':''}" onclick="setGlobalCodeFilter('all')">Todas as seções</button>
+      ${secsWithCode.map(s=>`<button class="fc-filter-btn ${globalCodeFilter===s.id?'active':''}" onclick="setGlobalCodeFilter('${s.id}')">S${s.num}: ${s.title.substring(0,20)}${s.title.length>20?'…':''}</button>`).join('')}
+    </div>` : ''}
+
+    ${all.length === 0 ? `<div class="code-empty">Nenhum trecho de código salvo ainda.<br>Acesse uma aula, vá na aba <strong>💻 Código</strong> e salve seus primeiros trechos!</div>` : `
+
+    <!-- CÓDIGO COMPLETO (merged) -->
+    <div style="background:#fff;border:1px solid #e8e6e0;border-radius:12px;overflow:hidden;margin-bottom:20px">
+      <div style="padding:14px 18px;border-bottom:1px solid #e8e6e0;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
+        <div>
+          <div style="font-size:13px;font-weight:800;color:#1a1a18;text-transform:uppercase;letter-spacing:.5px">💻 Código Completo Consolidado</div>
+          <div style="font-size:11px;color:#888;margin-top:3px">${mergedBlocks.length} trechos · ${mergedCode.split('\n').length} linhas · ${(globalCodeFilter==='all'?'todas as seções':SECTIONS.find(s=>s.id===globalCodeFilter)?.title||'')}</div>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+          <!-- Language selector for merged view -->
+          ${langs.map(l=>`<button class="lang-btn ${curLang===l?'sel':''}" data-lang="${l}" onclick="setGlobalCodeLang('${l}')">${l.toUpperCase()}</button>`).join('')}
+          <button class="btn-fullcode copy" id="btn-copy-fullcode" onclick="copyFullCode()">📋 Copiar tudo</button>
+          <button class="btn-fullcode dl" onclick="downloadCode()">⬇️ Baixar .java</button>
+        </div>
+      </div>
+      ${mergedBlocks.length === 0
+        ? `<div class="code-empty" style="margin:16px">Nenhum trecho ${curLang.toUpperCase()} ${globalCodeFilter!=='all'?'nesta seção':''} ainda.</div>`
+        : `<pre class="code-pre" id="full-code-pre" style="max-height:420px;overflow-y:auto">${syntaxHighlight(mergedCode,'java')}</pre>`
+      }
+    </div>
+
+    <!-- Individual blocks -->
+    <div style="font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:#888;margin-bottom:12px">Trechos individuais</div>
+    ${filtered.length === 0
+      ? `<div class="code-empty">Nenhum trecho nesta seção ainda.</div>`
+      : filtered.map(c => `
+        <div class="code-block" id="gcb-${c.id}" style="margin-bottom:12px">
+          <div class="code-block-hdr">
+            <div class="code-block-meta">
+              <span style="font-size:10px;font-weight:800;padding:2px 8px;border-radius:10px;background:${LANG_COLORS[c.lang||'java']}22;color:${LANG_COLORS[c.lang||'java']}">${(c.lang||'java').toUpperCase()}</span>
+              <span class="code-block-lesson">Aula ${c.lessonN} · ${c.lessonTitle}</span>
+              <span class="code-block-title">${c.title}</span>
+            </div>
+            <div class="code-block-actions">
+              <button class="code-icon-btn" onclick="copyCode(${c.id},'gcb-${c.id}')">📋</button>
+              <button class="code-icon-btn" onclick="goToLesson('${c.secId}',${c.lessonN})" title="Ir para aula">→</button>
+              <button class="code-icon-btn del" onclick="deleteCodeFromGlobal('${c.key}',${c.id})">✕</button>
+            </div>
+          </div>
+          <pre class="code-pre">${syntaxHighlight(c.body, c.lang||'java')}</pre>
+        </div>`).join('')
+    }
+    `}`;
+}
+
+function setGlobalCodeFilter(secId) {
+  globalCodeFilter = secId;
+  renderGlobalCode();
+}
+
+function setGlobalCodeLang(lang) {
+  window._globalCodeLang = lang;
+  renderGlobalCode();
+}
+
+function copyFullCode() {
+  const pre = document.getElementById('full-code-pre');
+  if (!pre) return;
+  navigator.clipboard.writeText(pre.innerText).then(() => {
+    const btn = document.getElementById('btn-copy-fullcode');
+    if (btn) { btn.textContent = '✅ Copiado!'; btn.classList.add('copied'); setTimeout(()=>{btn.textContent='📋 Copiar tudo';btn.classList.remove('copied');},2000); }
+  });
+}
+
+function downloadCode() {
+  const all = getAllCodes();
+  const filtered = globalCodeFilter === 'all' ? all : all.filter(c => c.secId === globalCodeFilter);
+  const curLang = window._globalCodeLang || 'java';
+  const blocks = filtered.filter(c => (c.lang||'java') === curLang);
+  const content = blocks.map(c => `// ── Aula ${c.lessonN}: ${c.lessonTitle} ──────────────\n// ${c.title}\n${c.body}`).join('\n\n');
+  const ext = curLang === 'sql' ? 'sql' : curLang === 'json' ? 'json' : curLang === 'xml' ? 'xml' : curLang === 'bash' ? 'sh' : 'java';
+  const blob = new Blob([content], {type:'text/plain'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url; a.download = `codigo-completo-java.${ext}`;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
+}
+
+function deleteCodeFromGlobal(key, id) {
+  if (!state.codes[key]) return;
+  state.codes[key] = state.codes[key].filter(c => c.id !== id);
+  saveState();
+  renderGlobalCode();
+  // refresh lesson detail if open
+  if (activeLessonKey === key) {
+    const [secId, nStr] = key.split('_');
+    renderLessonDetail(secId, parseInt(nStr));
+    setLessonTab('codigo', secId, parseInt(nStr));
+  }
+}
+
+function goToLesson(secId, n) {
+  openLesson(secId, n);
+  setLessonTab('codigo', secId, n);
+}
 let globalNoteFilter = 'all';
 
 function renderGlobalNotes() {
@@ -1404,6 +1800,323 @@ function renderGlobalNotes() {
 function setGlobalFilter(type) {
   globalNoteFilter = type;
   renderGlobalNotes();
+}
+
+// ============================================================
+// CODE FUNCTIONS
+// ============================================================
+const LANG_COLORS = { java:'#f89820', sql:'#4479A1', xml:'#e37933', bash:'#1D9E75', json:'#cbcb41' };
+
+function syntaxHighlight(code, lang) {
+  if (lang !== 'java') return escHtml(code);
+  let s = escHtml(code);
+  // comments first (so keywords inside comments don't get highlighted)
+  s = s.replace(/(\/\/[^\n]*)/g, '<span class="cm">$1</span>');
+  s = s.replace(/(\/\*[\s\S]*?\*\/)/g, '<span class="cm">$1</span>');
+  // strings
+  s = s.replace(/(&quot;[^&]*?&quot;|&#39;[^&]*?&#39;)/g, '<span class="str">$1</span>');
+  // annotations
+  s = s.replace(/(@\w+)/g, '<span class="ann">$1</span>');
+  // keywords
+  const kws = ['public','private','protected','class','interface','enum','extends','implements',
+    'void','return','new','static','final','abstract','this','super','if','else','for','while',
+    'do','switch','case','break','continue','try','catch','finally','throw','throws','import',
+    'package','boolean','int','long','double','float','char','byte','short','String','var',
+    'true','false','null','instanceof','record','sealed','permits'];
+  kws.forEach(k => {
+    s = s.replace(new RegExp(`\\b(${k})\\b`, 'g'), '<span class="kw">$1</span>');
+  });
+  // numbers
+  s = s.replace(/\b(\d+\.?\d*[fFdDlL]?)\b/g, '<span class="num">$1</span>');
+  return s;
+}
+
+function escHtml(t) {
+  return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function renderCodesHTML(key, secId, n) {
+  const codes = state.codes[key] || [];
+  if (!codes.length) return `<div class="code-empty">Nenhum trecho de código nesta aula.<br>Adicione código Java, SQL ou qualquer outra linguagem acima.</div>`;
+  return codes.map(c => {
+    const dotColor = LANG_COLORS[c.lang] || '#888';
+    return `<div class="code-block" id="cb-${c.id}">
+      <div class="code-block-hdr">
+        <div class="code-block-meta">
+          <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${dotColor}"></span>
+          <span class="code-block-lesson">${c.lang.toUpperCase()}</span>
+          <span class="code-block-title">${escHtml(c.title||'Sem título')}</span>
+        </div>
+        <div class="code-block-actions">
+          <button class="code-icon-btn" onclick="copyCode(${c.id},'${key}')" title="Copiar">📋 Copiar</button>
+          <button class="code-icon-btn" onclick="editCode(${c.id},'${key}','${secId}',${n})" title="Editar">✏️</button>
+          <button class="code-icon-btn del" onclick="deleteCode(${c.id},'${key}','${secId}',${n})" title="Excluir">✕</button>
+        </div>
+      </div>
+      <pre class="code-pre">${syntaxHighlight(c.body, c.lang)}</pre>
+    </div>`;
+  }).join('');
+}
+
+function addCode(key) {
+  const titleEl = document.getElementById('code-title-inp');
+  const bodyEl  = document.getElementById('code-body-inp');
+  const title = titleEl ? titleEl.value.trim() : '';
+  const body  = bodyEl  ? bodyEl.value.trim()  : '';
+  if (!body) return;
+  if (!state.codes[key]) state.codes[key] = [];
+  // parse secId and lessonN from key
+  const [secId, nStr] = key.split('_');
+  const lessonN = parseInt(nStr);
+  state.codes[key].unshift({
+    id: Date.now(), lang: window._codeLang || 'java',
+    title: title || 'Sem título', body,
+    date: new Date().toLocaleDateString('pt-BR'),
+    secId, lessonN
+  });
+  if (titleEl) titleEl.value = '';
+  if (bodyEl)  bodyEl.value  = '';
+  saveState();
+  // refresh lesson panel
+  const cl = document.getElementById('codes-list-' + key);
+  if (cl) cl.innerHTML = renderCodesHTML(key, secId, lessonN);
+  // refresh tab counter
+  renderLessonDetail(secId, lessonN);
+  window._lessonTab = 'codigo';
+  // refresh global code view if open
+  renderGlobalCode();
+  // refresh mobile
+  if (isMobile() && exportContext.secId === secId && exportContext.lessonN === lessonN) mRenderAulaBody(secId, lessonN);
+}
+
+function deleteCode(id, key, secId, n) {
+  if (!state.codes[key]) return;
+  state.codes[key] = state.codes[key].filter(c => c.id !== id);
+  saveState();
+  const cl = document.getElementById('codes-list-' + key);
+  if (cl) cl.innerHTML = renderCodesHTML(key, secId, n);
+  renderLessonDetail(secId, n);
+  window._lessonTab = 'codigo';
+  renderGlobalCode();
+  if (isMobile()) mRenderAulaBody(secId, n);
+}
+
+function editCode(id, key, secId, n) {
+  const codes = state.codes[key] || [];
+  const code = codes.find(c => c.id === id);
+  if (!code) return;
+  const block = document.getElementById('cb-' + id);
+  if (!block) return;
+  const dotColor = LANG_COLORS[code.lang] || '#888';
+  block.innerHTML = `
+    <div class="code-block-hdr">
+      <div class="code-block-meta">
+        <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${dotColor}"></span>
+        <select id="ce-lang-${id}" style="font-size:11px;padding:3px 8px;border-radius:6px;border:1px solid #444;background:#333;color:#fff;font-weight:700">
+          ${['java','sql','xml','bash','json'].map(l=>`<option value="${l}" ${code.lang===l?'selected':''}>${l.toUpperCase()}</option>`).join('')}
+        </select>
+      </div>
+      <div class="code-block-actions">
+        <button class="code-icon-btn" onclick="saveCodeEdit(${id},'${key}','${secId}',${n})">💾 Salvar</button>
+        <button class="code-icon-btn" onclick="cancelCodeEdit(${id},'${key}','${secId}',${n})">✕</button>
+      </div>
+    </div>
+    <div class="code-edit-area">
+      <input type="text" id="ce-title-${id}" value="${escHtml(code.title)}" placeholder="Título do trecho..." />
+      <textarea id="ce-body-${id}">${escHtml(code.body)}</textarea>
+    </div>`;
+}
+
+function saveCodeEdit(id, key, secId, n) {
+  const codes = state.codes[key] || [];
+  const code = codes.find(c => c.id === id);
+  if (!code) return;
+  const t = document.getElementById('ce-title-' + id);
+  const b = document.getElementById('ce-body-'  + id);
+  const l = document.getElementById('ce-lang-'  + id);
+  if (t) code.title = t.value.trim() || 'Sem título';
+  if (b) code.body  = b.value;
+  if (l) code.lang  = l.value;
+  saveState();
+  const cl = document.getElementById('codes-list-' + key);
+  if (cl) cl.innerHTML = renderCodesHTML(key, secId, n);
+  renderGlobalCode();
+  if (isMobile()) mRenderAulaBody(secId, n);
+}
+
+function cancelCodeEdit(id, key, secId, n) {
+  const cl = document.getElementById('codes-list-' + key);
+  if (cl) cl.innerHTML = renderCodesHTML(key, secId, n);
+}
+
+function copyCode(id, key) {
+  const code = (state.codes[key]||[]).find(c=>c.id===id);
+  if (!code) return;
+  navigator.clipboard.writeText(code.body).catch(()=>{
+    const ta=document.createElement('textarea'); ta.value=code.body;
+    ta.style.position='fixed'; ta.style.opacity='0';
+    document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+    document.body.removeChild(ta);
+  });
+  // brief visual feedback on the button
+  const btn = document.querySelector(`#cb-${id} .code-icon-btn`);
+  if (btn) { const orig=btn.textContent; btn.textContent='✅ Copiado!'; setTimeout(()=>btn.textContent=orig,1500); }
+}
+
+// ---- GLOBAL CODE VIEW ----
+let gcFilter = 'all'; // 'all' | secId
+
+function renderGlobalCode() {
+  const area = document.getElementById('global-code-area');
+  if (!area) return;
+
+  // collect all code snippets in lesson order
+  let allCodes = [];
+  SECTIONS.forEach(sec => {
+    sec.lessons.forEach(l => {
+      const key = lk(sec.id, l.n);
+      const title = state.customTitles[key] || l.t;
+      (state.codes[key]||[]).forEach(c => {
+        allCodes.push({...c, secId: sec.id, secNum: sec.num, secTitle: sec.title, lessonN: l.n, lessonTitle: title, key});
+      });
+    });
+  });
+
+  // sort snippets in section/lesson order (they're collected in order, so just reverse the unshift order)
+  // since we unshift(), newest first per lesson — flatten in lesson order
+  allCodes.sort((a,b) => {
+    if (a.secNum !== b.secNum) return a.secNum - b.secNum;
+    return a.lessonN - b.lessonN;
+  });
+
+  const filtered = gcFilter === 'all' ? allCodes : allCodes.filter(c => c.secId === gcFilter);
+  const totalSnippets = allCodes.length;
+  const langs = [...new Set(allCodes.map(c=>c.lang))];
+
+  // build complete joined code per language for download
+  const joinedJava = allCodes.filter(c=>c.lang==='java').map(c=>`// ── Aula ${c.lessonN}: ${c.lessonTitle} ──\n${c.body}`).join('\n\n');
+
+  area.innerHTML = `
+    <div class="fullcode-header">
+      <div>
+        <h3>💻 Código Completo (${totalSnippets} trechos)</h3>
+        <p style="font-size:12px;color:#888;margin-top:4px">Todos os trechos de código das suas aulas, em ordem de estudo</p>
+      </div>
+      <div class="fullcode-actions">
+        <button class="btn-fullcode copy" id="btn-copy-all" onclick="copyAllCode()">📋 Copiar tudo</button>
+        ${joinedJava ? `<button class="btn-fullcode dl" onclick="downloadCode()">⬇ Baixar .java</button>` : ''}
+      </div>
+    </div>
+
+    <!-- Filter by section -->
+    <div class="fullcode-filter">
+      <button class="fc-filter-btn ${gcFilter==='all'?'active':''}" onclick="setGcFilter('all',this)">Todas as seções</button>
+      ${SECTIONS.filter(s => {
+        return s.lessons.some(l => (state.codes[lk(s.id,l.n)]||[]).length > 0);
+      }).map(s => `<button class="fc-filter-btn ${gcFilter===s.id?'active':''}" onclick="setGcFilter('${s.id}',this)">S${s.num}</button>`).join('')}
+    </div>
+
+    ${filtered.length === 0 ? `<div class="code-empty">
+      ${totalSnippets === 0
+        ? 'Nenhum trecho de código ainda.<br>Abra uma aula, vá na aba <strong>💻 Código</strong> e adicione trechos!'
+        : 'Nenhum código nesta seção.'}
+    </div>` : filtered.map(c => {
+      const dotColor = LANG_COLORS[c.lang] || '#888';
+      return `<div style="margin-bottom:16px">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap">
+          <span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;background:${dotColor}22;color:${dotColor}">${c.lang.toUpperCase()}</span>
+          <span style="font-size:12px;font-weight:700;color:#1a1a18">${escHtml(c.title)}</span>
+          <span style="font-size:11px;color:#aaa">· Aula ${c.lessonN}: ${escHtml(c.lessonTitle)}</span>
+          <span style="font-size:10px;color:#ccc;margin-left:auto">S${c.secNum}</span>
+        </div>
+        <div class="code-block" id="gcb-${c.id}">
+          <div class="code-block-hdr">
+            <div class="code-block-meta">
+              <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${dotColor}"></span>
+              <span class="code-block-lesson">${c.lang.toUpperCase()}</span>
+              <span class="code-block-title">Aula ${c.lessonN} · ${escHtml(c.lessonTitle)}</span>
+            </div>
+            <div class="code-block-actions">
+              <button class="code-icon-btn" onclick="copyCodeById(${c.id},'${c.key}')">📋 Copiar</button>
+              <button class="code-icon-btn" onclick="openLesson('${c.secId}',${c.lessonN})">→ Ver aula</button>
+            </div>
+          </div>
+          <pre class="code-pre">${syntaxHighlight(c.body, c.lang)}</pre>
+        </div>
+      </div>`;
+    }).join('')}`;
+}
+
+function setGcFilter(secId, btn) {
+  gcFilter = secId;
+  renderGlobalCode();
+}
+
+function copyCodeById(id, key) {
+  const code = (state.codes[key]||[]).find(c=>c.id===id);
+  if (!code) return;
+  navigator.clipboard.writeText(code.body).catch(()=>{
+    const ta=document.createElement('textarea'); ta.value=code.body;
+    ta.style.position='fixed'; ta.style.opacity='0';
+    document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
+  });
+  const btn = document.querySelector(`#gcb-${id} .code-icon-btn`);
+  if (btn) { const o=btn.textContent; btn.textContent='✅ Copiado!'; setTimeout(()=>btn.textContent=o,1500); }
+}
+
+function copyAllCode() {
+  let all = [];
+  SECTIONS.forEach(sec => {
+    sec.lessons.forEach(l => {
+      const key = lk(sec.id, l.n);
+      (state.codes[key]||[]).forEach(c => {
+        const title = state.customTitles[key] || l.t;
+        all.push(`// ══════════════════════════════════════\n// S${sec.num} · Aula ${l.n}: ${title}\n// ${c.title} [${c.lang.toUpperCase()}]\n// ══════════════════════════════════════\n${c.body}`);
+      });
+    });
+  });
+  const text = all.join('\n\n');
+  navigator.clipboard.writeText(text).catch(()=>{
+    const ta=document.createElement('textarea'); ta.value=text;
+    ta.style.position='fixed'; ta.style.opacity='0';
+    document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
+  });
+  const btn = document.getElementById('btn-copy-all');
+  if (btn) { btn.textContent='✅ Copiado!'; btn.classList.add('copied'); setTimeout(()=>{ btn.textContent='📋 Copiar tudo'; btn.classList.remove('copied'); },2000); }
+}
+
+function downloadCode() {
+  let lines = [];
+  lines.push('// ☕ Java COMPLETO — Nelio Alves');
+  lines.push('// Código completo — gerado em ' + new Date().toLocaleDateString('pt-BR'));
+  lines.push('');
+  SECTIONS.forEach(sec => {
+    let secHasCodes = false;
+    sec.lessons.forEach(l => {
+      const key = lk(sec.id, l.n);
+      const javaCodes = (state.codes[key]||[]).filter(c=>c.lang==='java');
+      if (javaCodes.length) {
+        if (!secHasCodes) {
+          lines.push(`// ${'═'.repeat(50)}`);
+          lines.push(`// Seção ${sec.num}: ${sec.title}`);
+          lines.push(`// ${'═'.repeat(50)}`);
+          secHasCodes = true;
+        }
+        const title = state.customTitles[key] || l.t;
+        lines.push(`\n// ── Aula ${l.n}: ${title} ──`);
+        javaCodes.forEach(c => {
+          lines.push(`// ${c.title}`);
+          lines.push(c.body);
+        });
+      }
+    });
+  });
+  const blob = new Blob([lines.join('\n')], {type:'text/plain'});
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href = url; a.download = 'java_completo_codigo.java';
+  document.body.appendChild(a); a.click();
+  document.body.removeChild(a); URL.revokeObjectURL(url);
 }
 
 // ============================================================
@@ -1522,6 +2235,7 @@ function setContentTab(tab) {
   });
   if (tab === 'notas') renderGlobalNotes();
   if (tab === 'diario') renderLogList();
+  if (tab === 'codigo') renderGlobalCode();
   if (tab === 'visao') renderOverview();
 }
 
@@ -1876,6 +2590,7 @@ function mSetScreen(name) {
   if (name === 'stats') mUpdateStats();
   if (name === 'notas') mRenderNotes();
   if (name === 'diario') mRenderLog();
+  if (name === 'mcodigo') mRenderMobileGlobalCode();
 }
 
 function mGoBack() { mSetScreen(mPrevScreen || 'secoes'); }
@@ -1949,13 +2664,18 @@ function mRenderAulaBody(secId, n) {
   const isDone = !!state.done[key];
   const title = state.customTitles[key] || lesson.t;
   const notes = state.notes[key] || [];
+  const codes = state.codes[key] || [];
   const body = document.getElementById('m-aula-body');
   if (!body) return;
   const tl = document.getElementById('m-aula-top-title'); if (tl) tl.textContent = title;
   const curType = window._noteType || 'tip';
+  const mAulaTab = window._mAulaTab || 'notas';
+  const curLang = window._codeLang || 'java';
   const typeLabels = {tip:'💡 Dica',doubt:'❓ Dúvida',important:'⭐ Importante',concept:'📖 Conceito'};
   const typeSelCls = {tip:'sel-tip',doubt:'sel-doubt',important:'sel-important',concept:'sel-concept'};
+
   body.innerHTML = `
+    <!-- Hero card -->
     <div style="margin:12px 12px 0;background:#fff;border:1px solid #e8e6e0;border-radius:14px;padding:16px">
       <div style="font-size:15px;font-weight:700;color:#1a1a18;line-height:1.4;margin-bottom:8px">${title}</div>
       <div style="display:flex;gap:10px;font-size:12px;color:#aaa;margin-bottom:14px;flex-wrap:wrap">
@@ -1969,8 +2689,21 @@ function mRenderAulaBody(secId, n) {
         <button style="padding:11px 8px;border-radius:10px;border:none;cursor:pointer;font-size:13px;font-weight:700;background:#f5f4f0;color:#666" onclick="mEditTitle('${secId}',${n})">✏️ Editar</button>
       </div>
     </div>
-    <div style="margin:12px 12px 80px">
-      <div style="font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:#888;margin-bottom:10px">Anotações desta aula (${notes.length})</div>
+
+    <!-- Sub-tabs -->
+    <div style="display:flex;border-bottom:1px solid #e8e6e0;margin:12px 0 0;background:#fff">
+      <button id="m-stab-notas" onclick="mSetAulaTab('notas','${secId}',${n})"
+        style="flex:1;padding:11px 8px;border:none;background:none;cursor:pointer;font-size:13px;font-weight:700;color:${mAulaTab==='notas'?'#1a1a18':'#aaa'};border-bottom:2px solid ${mAulaTab==='notas'?'#1a1a18':'transparent'}">
+        📝 Notas (${notes.length})
+      </button>
+      <button id="m-stab-codigo" onclick="mSetAulaTab('codigo','${secId}',${n})"
+        style="flex:1;padding:11px 8px;border:none;background:none;cursor:pointer;font-size:13px;font-weight:700;color:${mAulaTab==='codigo'?'#534AB7':'#aaa'};border-bottom:2px solid ${mAulaTab==='codigo'?'#534AB7':'transparent'}">
+        💻 Código (${codes.length})
+      </button>
+    </div>
+
+    <!-- NOTAS panel -->
+    <div id="m-panel-notas" style="margin:0 12px 80px;display:${mAulaTab==='notas'?'block':'none'};padding-top:12px">
       <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px" id="m-nt-btns">
         ${Object.keys(typeLabels).map(type=>`<button class="ntb ${curType===type?typeSelCls[type]:''}" data-type="${type}" onclick="mSetNoteType(this,'${key}')">${typeLabels[type]}</button>`).join('')}
       </div>
@@ -1981,8 +2714,157 @@ function mRenderAulaBody(secId, n) {
       <button onclick="mAddNote('${key}')"
         style="display:block;width:100%;padding:13px;border:none;border-radius:10px;background:#1a1a18;color:#fff;font-size:14px;font-weight:700;cursor:pointer;margin-bottom:14px">+ Adicionar anotação</button>
       <div id="m-notes-aula-${key}">${mRenderNotesForKey(key)}</div>
+    </div>
+
+    <!-- CÓDIGO panel -->
+    <div id="m-panel-codigo" style="margin:0 12px 80px;display:${mAulaTab==='codigo'?'block':'none'};padding-top:12px">
+      <!-- Language selector -->
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px" id="m-lang-btns">
+        ${['java','sql','xml','bash','json'].map(l=>`<button class="lang-btn ${curLang===l?'sel':''}" data-lang="${l}" onclick="mSetCodeLang(this,'${key}','${secId}',${n})">${l.toUpperCase()}</button>`).join('')}
+      </div>
+      <input type="text" id="m-code-title-inp" placeholder="Título do trecho (ex: Classe Produto)..."
+        style="display:block;width:100%;font-size:14px;padding:11px 13px;border:1px solid #e8e6e0;border-radius:10px;background:#faf9f7;color:#1a1a18;font-family:inherit;outline:none;margin-bottom:8px;-webkit-appearance:none"/>
+      <textarea id="m-code-body-inp" placeholder="// Cole ou escreva seu código aqui..."
+        style="display:block;width:100%;font-size:13px;padding:12px 13px;border:1px solid #e8e6e0;border-radius:10px;background:#1a1a18;color:#e8e8e8;font-family:'Courier New',monospace;outline:none;resize:none;height:160px;line-height:1.7;margin-bottom:8px;-webkit-appearance:none;tab-size:2"></textarea>
+      <button onclick="mAddCode('${key}','${secId}',${n})"
+        style="display:block;width:100%;padding:13px;border:none;border-radius:10px;background:#534AB7;color:#fff;font-size:14px;font-weight:700;cursor:pointer;margin-bottom:14px">💾 Salvar trecho de código</button>
+      <div id="m-codes-aula-${key}">${mRenderCodesForKey(key, secId, n)}</div>
     </div>`;
 }
+
+function mSetAulaTab(tab, secId, n) {
+  window._mAulaTab = tab;
+  const pn = document.getElementById('m-panel-notas');
+  const pc = document.getElementById('m-panel-codigo');
+  const tn = document.getElementById('m-stab-notas');
+  const tc = document.getElementById('m-stab-codigo');
+  if (pn) pn.style.display = tab === 'notas' ? 'block' : 'none';
+  if (pc) pc.style.display = tab === 'codigo' ? 'block' : 'none';
+  if (tn) { tn.style.color = tab==='notas'?'#1a1a18':'#aaa'; tn.style.borderBottomColor = tab==='notas'?'#1a1a18':'transparent'; }
+  if (tc) { tc.style.color = tab==='codigo'?'#534AB7':'#aaa'; tc.style.borderBottomColor = tab==='codigo'?'#534AB7':'transparent'; }
+}
+
+function mSetCodeLang(btn, key, secId, n) {
+  window._codeLang = btn.dataset.lang;
+  document.querySelectorAll('#m-lang-btns .lang-btn').forEach(b => b.classList.remove('sel'));
+  btn.classList.add('sel');
+}
+
+function mRenderCodesForKey(key, secId, n) {
+  const codes = state.codes[key] || [];
+  if (!codes.length) return `<div style="text-align:center;padding:20px;color:#bbb;font-size:13px;background:#f9f9f9;border-radius:10px;border:1px dashed #e0dedc">Nenhum código nesta aula.<br>Adicione trechos acima!</div>`;
+  return codes.map(c => {
+    const dotColor = LANG_COLORS[c.lang] || '#888';
+    return `<div class="code-block" style="margin-bottom:12px" id="mcb-${c.id}">
+      <div class="code-block-hdr">
+        <div class="code-block-meta">
+          <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${dotColor}"></span>
+          <span class="code-block-lesson">${c.lang.toUpperCase()}</span>
+          <span class="code-block-title">${escHtml(c.title)}</span>
+        </div>
+        <div class="code-block-actions">
+          <button class="code-icon-btn" onclick="mCopyCode(${c.id},'${key}')">📋</button>
+          <button class="code-icon-btn del" onclick="mDeleteCode(${c.id},'${key}','${secId}',${n})">✕</button>
+        </div>
+      </div>
+      <pre class="code-pre" style="font-size:11px">${syntaxHighlight(c.body, c.lang)}</pre>
+    </div>`;
+  }).join('');
+}
+
+function mAddCode(key, secId, n) {
+  const ti = document.getElementById('m-code-title-inp');
+  const bi = document.getElementById('m-code-body-inp');
+  const title = ti?.value.trim();
+  const body  = bi?.value.trim();
+  if (!body) return;
+  if (!state.codes[key]) state.codes[key] = [];
+  state.codes[key].unshift({
+    id: Date.now(), lang: window._codeLang || 'java',
+    title: title || 'Sem título', body,
+    date: new Date().toLocaleDateString('pt-BR'),
+    secId, lessonN: n
+  });
+  if (ti) ti.value = '';
+  if (bi) bi.value = '';
+  saveState();
+  mRenderAulaBody(secId, n);
+  window._mAulaTab = 'codigo';
+  mSetAulaTab('codigo', secId, n);
+  // refresh global code views
+  renderGlobalCode();
+  mRenderMobileGlobalCode();
+}
+
+function mDeleteCode(id, key, secId, n) {
+  if (!state.codes[key]) return;
+  state.codes[key] = state.codes[key].filter(c => c.id !== id);
+  saveState();
+  const cl = document.getElementById('m-codes-aula-' + key);
+  if (cl) cl.innerHTML = mRenderCodesForKey(key, secId, n);
+  renderGlobalCode();
+  mRenderMobileGlobalCode();
+}
+
+function mCopyCode(id, key) {
+  const code = (state.codes[key]||[]).find(c=>c.id===id);
+  if (!code) return;
+  navigator.clipboard.writeText(code.body).catch(()=>{
+    const ta=document.createElement('textarea'); ta.value=code.body; ta.style.position='fixed'; ta.style.opacity='0';
+    document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
+  });
+  const btn = document.querySelector(`#mcb-${id} .code-icon-btn`);
+  if (btn) { const o=btn.textContent; btn.textContent='✅'; setTimeout(()=>btn.textContent=o,1500); }
+}
+
+function mRenderMobileGlobalCode() {
+  const area = document.getElementById('m-global-code-area');
+  if (!area) return;
+  let allCodes = [];
+  SECTIONS.forEach(sec => {
+    sec.lessons.forEach(l => {
+      const key = lk(sec.id, l.n);
+      const lessonTitle = state.customTitles[key] || l.t;
+      (state.codes[key]||[]).forEach(c => allCodes.push({...c, secNum: sec.num, secTitle: sec.title, lessonTitle, key, secId: sec.id}));
+    });
+  });
+  allCodes.sort((a,b) => a.secNum !== b.secNum ? a.secNum - b.secNum : a.lessonN - b.lessonN);
+
+  area.innerHTML = `
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px">
+      <div>
+        <div style="font-size:14px;font-weight:800;color:#1a1a18">💻 Código Completo</div>
+        <div style="font-size:11px;color:#888;margin-top:2px">${allCodes.length} trechos de ${[...new Set(allCodes.map(c=>c.lang))].join(', ')||'—'}</div>
+      </div>
+      <div style="display:flex;gap:8px">
+        ${allCodes.length ? `<button onclick="copyAllCode()" style="font-size:12px;font-weight:700;padding:8px 14px;border:none;border-radius:8px;background:#534AB7;color:#fff;cursor:pointer">📋 Copiar</button>` : ''}
+        ${allCodes.filter(c=>c.lang==='java').length ? `<button onclick="downloadCode()" style="font-size:12px;font-weight:700;padding:8px 14px;border:none;border-radius:8px;background:#f0eeea;color:#1a1a18;cursor:pointer">⬇ .java</button>` : ''}
+      </div>
+    </div>
+    ${allCodes.length === 0
+      ? `<div style="text-align:center;padding:32px 16px;color:#bbb;font-size:13px;background:#f9f9f9;border-radius:12px;border:1px dashed #e0dedc">Nenhum código ainda.<br>Abra uma aula → aba <strong>💻 Código</strong></div>`
+      : allCodes.map(c => {
+        const dotColor = LANG_COLORS[c.lang] || '#888';
+        return `<div style="margin-bottom:14px">
+          <div style="font-size:11px;color:#888;margin-bottom:5px">
+            <span style="font-weight:700;color:${dotColor}">${c.lang.toUpperCase()}</span>
+            · <strong style="color:#1a1a18">${escHtml(c.title)}</strong>
+            · S${c.secNum} Aula ${c.lessonN}
+          </div>
+          <div class="code-block">
+            <div class="code-block-hdr" style="padding:7px 12px">
+              <span class="code-block-title">${escHtml(c.lessonTitle)}</span>
+              <div class="code-block-actions">
+                <button class="code-icon-btn" onclick="mCopyCode(${c.id},'${c.key}')">📋</button>
+                <button class="code-icon-btn" onclick="mOpenLesson('${c.secId}',${c.lessonN})">→</button>
+              </div>
+            </div>
+            <pre class="code-pre" style="font-size:11px">${syntaxHighlight(c.body, c.lang)}</pre>
+          </div>
+        </div>`;
+      }).join('')}`;
+}
+
 
 function mRenderNotesForKey(key) {
   const notes = state.notes[key] || [];
