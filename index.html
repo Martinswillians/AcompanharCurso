@@ -998,10 +998,16 @@ function editNote(k,id){
 function saveNote(k,id){
   const note=(state.notes[k]||[]).find(n=>n.id===id); if(!note) return;
   const t=document.getElementById('en-title-'+id); const b=document.getElementById('en-body-'+id); const tp=document.getElementById('en-type-'+id);
-  if(t) note.title=t.value.trim()||'(sem título)'; if(b) note.body=b.value.trim(); if(tp) note.type=tp.value;
-  save(); const c=document.getElementById('d-notes-'+k); if(c) c.innerHTML=renderNotesHTML(k); dRenderGlobalNotes(); _refreshSummaryIfOpen();
+  if(t) note.title=t.value.trim()||'(sem titulo)'; if(b) note.body=b.value.trim(); if(tp) note.type=tp.value;
+  save();
+  const c=document.getElementById('d-notes-'+k); if(c) c.innerHTML=renderNotesHTML(k);
+  const mc=document.getElementById('m-notes-'+k); if(mc) mc.innerHTML=renderNotesHTML(k);
+  dRenderGlobalNotes(); _refreshSummaryIfOpen();
 }
-function cancelNote(k,id){ const c=document.getElementById('d-notes-'+k); if(c) c.innerHTML=renderNotesHTML(k); }
+function cancelNote(k,id){
+  const c=document.getElementById('d-notes-'+k); if(c) c.innerHTML=renderNotesHTML(k);
+  const mc=document.getElementById('m-notes-'+k); if(mc) mc.innerHTML=renderNotesHTML(k);
+}
 
 // ── GLOBAL NOTES ─────────────────────────────────────────────
 let gNoteFilter='all';
@@ -1113,62 +1119,116 @@ function getAllCodes(){
 function dRenderGlobalCode(){
   const area=document.getElementById('d-global-code'); if(!area) return;
   const all=getAllCodes();
+  if(!all.length){
+    area.innerHTML=`<div style="background:#0d0d0d;border-radius:14px;overflow:hidden;border:1px solid #2a2a2a;padding:48px;text-align:center;color:#555;font-family:monospace;font-size:12px;line-height:1.8">
+      <div style="font-size:24px;margin-bottom:10px">💻</div>
+      // Nenhum codigo ainda.<br>// Acesse uma aula, aba Codigo, e salve trechos!
+    </div>`;
+    return;
+  }
   const secsWithCode=SECTIONS.filter(sec=>sec.lessons.some(l=>(state.codes[lk(sec.id,l.n)]||[]).length>0));
-  const filtered=globalCodeFilter==='all'?all:all.filter(c=>c.secId===globalCodeFilter);
-  const curGLang=window._gclang||'java';
-  const mergedBlocks=filtered.filter(c=>(c.lang||'java')===curGLang);
-  const mergedCode=mergedBlocks.map(c=>`// ── Aula ${c.lessonN}: ${c.lessonTitle}\n// ${c.title}\n${c.body}`).join('\n\n');
   const langs=[...new Set(all.map(c=>c.lang||'java'))];
+  const curGLang=window._gclang||langs[0]||'java';
+  const filtered=globalCodeFilter==='all'?all:all.filter(c=>c.secId===globalCodeFilter);
+  const blocks=filtered.filter(c=>(c.lang||'java')===curGLang);
+
+  // Build merged code with section separators and line numbers
+  const rawLines=[];
+  let lastSec=null;
+  blocks.forEach(c=>{
+    if(c.secNum!==lastSec){
+      if(rawLines.length) rawLines.push('');
+      rawLines.push('// ════════════════════════════════════════════════════');
+      rawLines.push(`// SECAO ${c.secNum}: ${c.secTitle}`);
+      rawLines.push('// ════════════════════════════════════════════════════');
+      lastSec=c.secNum;
+    }
+    rawLines.push(`// ── Aula ${c.lessonN}: ${c.lessonTitle}`);
+    rawLines.push(`// ${c.title}`);
+    c.body.split('\n').forEach(l=>rawLines.push(l));
+    rawLines.push('');
+  });
+  const rawCode=rawLines.join('\n');
+  const totalLines=rawLines.length;
+  const langColor=LANG_COLORS[curGLang]||'#f89820';
+  const ext={sql:'sql',json:'json',xml:'xml',bash:'sh'}[curGLang]||'java';
+
+  const numbered=rawLines.map((l,i)=>{
+    const n=String(i+1).padStart(4,' ');
+    return `<span style="color:#3a3a3a;user-select:none;margin-right:16px">${n}</span>${syntaxHL(l,curGLang)}`;
+  }).join('\n');
 
   area.innerHTML=`
+    <!-- Stats -->
     <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px">
-      ${[{l:'Trechos',v:all.length,c:'#1a1a18'},{l:'Seções',v:secsWithCode.length,c:'#534AB7'},{l:'Linguagens',v:langs.length,c:'#f89820'},{l:'Linhas',v:all.reduce((s,c)=>s+c.body.split('\n').length,0),c:'#1D9E75'}].map(x=>`
-        <div class="stat-c" style="min-width:80px"><div class="stat-n" style="color:${x.c}">${x.v}</div><div class="stat-l">${x.l}</div></div>`).join('')}
+      ${[{l:'Trechos',v:all.length,c:'#534AB7'},{l:'Linhas',v:totalLines,c:'#1D9E75'},{l:'Seções',v:secsWithCode.length,c:'#185FA5'},{l:'Linguagens',v:langs.length,c:'#f89820'}].map(x=>`<div class="stat-c" style="min-width:80px"><div class="stat-n" style="color:${x.c}">${x.v}</div><div class="stat-l">${x.l}</div></div>`).join('')}
     </div>
-    ${secsWithCode.length?`<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:13px">
-      <button class="lang-btn ${globalCodeFilter==='all'?'sel':''}" onclick="setGCodeFilter('all')">Todas seções</button>
+
+    <!-- Filters -->
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;align-items:center">
+      ${langs.length>1?langs.map(l=>`<button class="lang-btn ${curGLang===l?'sel':''}" onclick="setGLang('${l}')">${l.toUpperCase()}</button>`).join(''):''}
+      <div style="width:1px;background:#e8e6e0;height:20px;margin:0 2px"></div>
+      <button class="lang-btn ${globalCodeFilter==='all'?'sel':''}" onclick="setGCodeFilter('all')">Todas</button>
       ${secsWithCode.map(s=>`<button class="lang-btn ${globalCodeFilter===s.id?'sel':''}" onclick="setGCodeFilter('${s.id}')">S${s.num}</button>`).join('')}
-    </div>`:''}
-    ${all.length===0?`<div class="code-empty" style="padding:40px">Nenhum código ainda.<br>Acesse uma aula → aba <strong>💻 Código</strong></div>`:`
-    <div style="background:#fff;border:1px solid #e8e6e0;border-radius:12px;overflow:hidden;margin-bottom:18px">
-      <div style="padding:13px 17px;border-bottom:1px solid #e8e6e0;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
-        <div>
-          <div style="font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:#1a1a18">💻 Código Completo</div>
-          <div style="font-size:11px;color:#888;margin-top:2px">${mergedBlocks.length} trechos · ${mergedCode.split('\n').length} linhas</div>
+    </div>
+
+    <!-- Terminal window -->
+    <div style="background:#0d0d0d;border-radius:14px;overflow:hidden;border:1px solid #2a2a2a;box-shadow:0 8px 32px rgba(0,0,0,.35)">
+
+      <!-- Title bar -->
+      <div style="background:#1a1a1a;border-bottom:1px solid #2a2a2a;padding:10px 16px;display:flex;align-items:center;gap:10px">
+        <div style="display:flex;gap:6px;flex-shrink:0">
+          <span style="width:12px;height:12px;border-radius:50%;background:#ff5f57;display:inline-block"></span>
+          <span style="width:12px;height:12px;border-radius:50%;background:#febc2e;display:inline-block"></span>
+          <span style="width:12px;height:12px;border-radius:50%;background:#28c840;display:inline-block"></span>
         </div>
-        <div style="display:flex;gap:7px;flex-wrap:wrap;align-items:center">
-          ${langs.map(l=>`<button class="lang-btn ${curGLang===l?'sel':''}" onclick="setGLang('${l}')">${l.toUpperCase()}</button>`).join('')}
-          <button class="btn-add-code" id="btn-copy-full" onclick="copyFullCode()" style="padding:6px 14px">📋 Copiar</button>
-          <button class="btn-log" onclick="downloadCode()" style="padding:6px 14px">⬇ .java</button>
+        <div style="flex:1;text-align:center">
+          <span style="font-size:12px;color:#555;font-family:monospace">java-completo.${ext}</span>
+        </div>
+        <div style="display:flex;gap:7px">
+          <button id="btn-copy-full" onclick="copyFullCode()" style="font-size:11px;font-weight:700;padding:4px 12px;border:none;border-radius:6px;background:#333;color:#aaa;cursor:pointer;transition:all .15s">📋 Copiar</button>
+          <button onclick="downloadCode()" style="font-size:11px;font-weight:700;padding:4px 12px;border:none;border-radius:6px;background:#333;color:#aaa;cursor:pointer">⬇ .${ext}</button>
         </div>
       </div>
-      ${mergedBlocks.length?`<pre class="code-pre" id="full-code-pre" style="max-height:400px;overflow-y:auto">${syntaxHL(mergedCode,'java')}</pre>`:`<div class="code-empty" style="margin:14px">Nenhum trecho ${curGLang.toUpperCase()} neste filtro.</div>`}
-    </div>
-    <div style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:#888;margin-bottom:10px">Trechos Individuais</div>
-    ${filtered.length?filtered.map(c=>`
-      <div class="code-block" id="gcb-${c.id}" style="margin-bottom:11px">
-        <div class="code-block-hdr">
-          <div class="code-block-meta">
-            <span style="font-size:10px;font-weight:800;padding:2px 8px;border-radius:10px;background:${LANG_COLORS[c.lang]||'#666'}22;color:${LANG_COLORS[c.lang]||'#aaa'}">${c.lang.toUpperCase()}</span>
-            <span class="code-block-lesson">Aula ${c.lessonN}</span>
-            <span class="code-block-title">${escHtml(c.title)}</span>
-          </div>
-          <div class="code-block-actions">
-            <button class="code-icon-btn" onclick="copyCodeBlock('gcb-${c.id}')">📋</button>
-            <button class="code-icon-btn" onclick="dOpenLesson('${c.secId}',${c.lessonN})">→</button>
-            <button class="code-icon-btn" onclick="deleteGCode('${c.k}',${c.id})" style="color:#f87171">✕</button>
-          </div>
-        </div>
-        <pre class="code-pre">${syntaxHL(c.body,c.lang)}</pre>
-      </div>`).join(''):`<div class="code-empty">Nenhum trecho neste filtro.</div>`}
-    `}`;
+
+      <!-- Status bar -->
+      <div style="background:#1e1e1e;border-bottom:1px solid #222;padding:5px 16px;display:flex;align-items:center;justify-content:space-between">
+        <span style="font-size:10px;color:#555;font-family:monospace">${blocks.length} trechos · ${globalCodeFilter==='all'?'todas as secoes':('S'+(secsWithCode.find(s=>s.id===globalCodeFilter)||{num:'?'}).num)}</span>
+        <span style="font-size:10px;font-weight:700;padding:1px 9px;border-radius:4px;background:${langColor}22;color:${langColor};font-family:monospace">${curGLang.toUpperCase()}</span>
+      </div>
+
+      <!-- Code with line numbers -->
+      <pre id="full-code-pre" style="margin:0;padding:14px 0 14px;font-family:'Courier New',Consolas,monospace;font-size:12px;line-height:1.75;color:#e8e8e8;overflow-x:auto;max-height:520px;overflow-y:auto;white-space:pre;tab-size:2;background:#0d0d0d">${blocks.length?numbered:`<span style="color:#444;padding:0 18px">// Nenhum trecho ${curGLang.toUpperCase()} neste filtro.</span>`}</pre>
+
+      <!-- Bottom bar -->
+      <div style="background:#1a1a1a;border-top:1px solid #2a2a2a;padding:5px 16px;display:flex;align-items:center;justify-content:space-between">
+        <span style="font-size:10px;color:#3a3a3a;font-family:monospace">Ln ${totalLines} · ${all.reduce((s,c)=>s+c.body.split('\n').length,0)} linhas de codigo</span>
+        <span style="font-size:10px;color:#3a3a3a;font-family:monospace">Java Study Tracker · UTF-8</span>
+      </div>
+    </div>`;
 }
 function setGCodeFilter(f){ globalCodeFilter=f; dRenderGlobalCode(); }
 function setGLang(l){ window._gclang=l; dRenderGlobalCode(); }
 function copyFullCode(){
-  const pre=document.getElementById('full-code-pre'); if(!pre) return;
-  navigator.clipboard.writeText(pre.innerText).then(()=>{
-    const b=document.getElementById('btn-copy-full'); if(b){b.textContent='✅';setTimeout(()=>b.textContent='📋 Copiar',1800);}
+  const all=getAllCodes();
+  const curGLang=window._gclang||'java';
+  const filtered=globalCodeFilter==='all'?all:all.filter(c=>c.secId===globalCodeFilter);
+  const blocks=filtered.filter(c=>(c.lang||'java')===curGLang);
+  const lines=[];
+  let lastSec=null;
+  blocks.forEach(c=>{
+    if(c.secNum!==lastSec){
+      if(lines.length) lines.push('');
+      lines.push(`// SECAO ${c.secNum}: ${c.secTitle}`);
+      lastSec=c.secNum;
+    }
+    lines.push(`// Aula ${c.lessonN}: ${c.lessonTitle} - ${c.title}`);
+    lines.push(c.body);
+    lines.push('');
+  });
+  navigator.clipboard.writeText(lines.join('\n')).then(()=>{
+    const b=document.getElementById('btn-copy-full');
+    if(b){b.textContent='✅ Copiado!';b.style.background='#1D9E75';b.style.color='#fff';setTimeout(()=>{b.textContent='📋 Copiar';b.style.background='#333';b.style.color='#aaa';},2000);}
   });
 }
 function downloadCode(){
@@ -1772,21 +1832,130 @@ function mEditTitle(secId,n){
 function mRenderCode(){
   const area=document.getElementById('m-code-list'); if(!area) return;
   const all=getAllCodes();
-  if(!all.length){ area.innerHTML=`<div class="code-empty" style="padding:40px">Nenhum código ainda.<br>Abra uma aula → aba <strong>💻 Código</strong></div>`; return; }
-  area.innerHTML=`<div style="font-size:14px;font-weight:800;color:#1a1a18;margin-bottom:12px">💻 Código Completo (${all.length} trechos)</div>`+
-    all.map(c=>`<div class="code-block" style="margin-bottom:12px">
-      <div class="code-block-hdr">
-        <div class="code-block-meta">
-          <span style="font-size:10px;font-weight:800;padding:2px 8px;border-radius:10px;background:${LANG_COLORS[c.lang]||'#666'}22;color:${LANG_COLORS[c.lang]||'#aaa'}">${c.lang.toUpperCase()}</span>
-          <span class="code-block-title">${escHtml(c.title)}</span>
+  if(!all.length){
+    area.innerHTML=`
+      <div style="background:#1a1a18;border-radius:14px;overflow:hidden;border:1px solid #333">
+        <div style="padding:12px 15px;background:#111;border-bottom:1px solid #333;display:flex;align-items:center;gap:8px">
+          <span style="width:11px;height:11px;border-radius:50%;background:#ff5f57;display:inline-block"></span>
+          <span style="width:11px;height:11px;border-radius:50%;background:#febc2e;display:inline-block"></span>
+          <span style="width:11px;height:11px;border-radius:50%;background:#28c840;display:inline-block"></span>
+          <span style="font-size:11px;color:#666;margin-left:6px;font-family:monospace">java-completo.java</span>
         </div>
-        <div class="code-block-actions">
-          <button class="code-icon-btn" onclick="mOpenLesson('${c.secId}',${c.lessonN})">→ Aula</button>
+        <div style="padding:28px 18px;text-align:center;color:#555;font-size:12px;font-family:monospace;line-height:1.8">
+          <div style="font-size:20px;margin-bottom:8px">💻</div>
+          // Nenhum codigo ainda.<br>
+          // Abra uma aula → aba Codigo<br>
+          // e salve seus primeiros trechos!
+        </div>
+      </div>`;
+    return;
+  }
+
+  // Build languages available
+  const langs=[...new Set(all.map(c=>c.lang||'java'))];
+  const curLangM=window._mCodeLang||langs[0]||'java';
+  const filtered=all.filter(c=>(c.lang||'java')===curLangM);
+
+  // Build merged terminal code with section/lesson separators
+  const mergedLines=[];
+  let lastSec=null;
+  filtered.forEach(c=>{
+    if(c.secNum!==lastSec){
+      if(mergedLines.length) mergedLines.push('');
+      mergedLines.push('// ════════════════════════════════════════');
+      mergedLines.push(`// SECAO ${c.secNum}: ${c.secTitle}`);
+      mergedLines.push('// ════════════════════════════════════════');
+      lastSec=c.secNum;
+    }
+    mergedLines.push(`// ── Aula ${c.lessonN}: ${c.lessonTitle}`);
+    mergedLines.push(`// ${c.title}`);
+    mergedLines.push(c.body);
+    mergedLines.push('');
+  });
+  const mergedCode=mergedLines.join('\n');
+  const totalLines=mergedCode.split('\n').length;
+
+  // Line numbers
+  const lines=mergedCode.split('\n');
+  const numbered=lines.map((l,i)=>{
+    const n=String(i+1).padStart(4,' ');
+    return `<span style="color:#444;user-select:none;margin-right:16px">${n}</span>${syntaxHL(l,curLangM)}`;
+  }).join('\n');
+
+  const langColor=LANG_COLORS[curLangM]||'#f89820';
+
+  area.innerHTML=`
+    <!-- Stats row -->
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px">
+      <div class="stat-c" style="flex:1;min-width:70px"><div class="stat-n" style="color:#534AB7">${all.length}</div><div class="stat-l">Trechos</div></div>
+      <div class="stat-c" style="flex:1;min-width:70px"><div class="stat-n" style="color:#1D9E75">${totalLines}</div><div class="stat-l">Linhas</div></div>
+      <div class="stat-c" style="flex:1;min-width:70px"><div class="stat-n" style="color:#f89820">${langs.length}</div><div class="stat-l">Linguagens</div></div>
+    </div>
+
+    <!-- Language selector -->
+    ${langs.length>1?`<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px">
+      ${langs.map(l=>`<button class="lang-btn ${curLangM===l?'sel':''}" onclick="mSetCodeLang('${l}')">${l.toUpperCase()}</button>`).join('')}
+    </div>`:''}
+
+    <!-- Terminal -->
+    <div style="background:#0d0d0d;border-radius:14px;overflow:hidden;border:1px solid #2a2a2a;box-shadow:0 4px 24px rgba(0,0,0,.4)">
+
+      <!-- Terminal titlebar -->
+      <div style="background:#1a1a1a;border-bottom:1px solid #2a2a2a;padding:10px 14px;display:flex;align-items:center;gap:10px">
+        <div style="display:flex;gap:6px;flex-shrink:0">
+          <span style="width:11px;height:11px;border-radius:50%;background:#ff5f57;display:inline-block"></span>
+          <span style="width:11px;height:11px;border-radius:50%;background:#febc2e;display:inline-block"></span>
+          <span style="width:11px;height:11px;border-radius:50%;background:#28c840;display:inline-block"></span>
+        </div>
+        <div style="flex:1;text-align:center">
+          <span style="font-size:11px;color:#555;font-family:monospace">java-completo.${curLangM==='sql'?'sql':curLangM==='bash'?'sh':curLangM==='json'?'json':curLangM==='xml'?'xml':'java'}</span>
+        </div>
+        <div style="display:flex;gap:6px">
+          <button onclick="mCopyFullCode()" id="m-btn-copy" style="font-size:10px;font-weight:700;padding:3px 10px;border:none;border-radius:6px;background:#333;color:#aaa;cursor:pointer">📋</button>
+          <button onclick="downloadCode()" style="font-size:10px;font-weight:700;padding:3px 10px;border:none;border-radius:6px;background:#333;color:#aaa;cursor:pointer">⬇</button>
         </div>
       </div>
-      <div class="code-pre" style="font-size:11px;color:#888;padding:6px 13px;border-bottom:1px solid #333">S${c.secNum} · Aula ${c.lessonN} · ${escHtml(c.lessonTitle)}</div>
-      <pre class="code-pre" style="font-size:11px">${syntaxHL(c.body,c.lang)}</pre>
-    </div>`).join('');
+
+      <!-- Status bar -->
+      <div style="background:#1e1e1e;border-bottom:1px solid #2a2a2a;padding:5px 14px;display:flex;align-items:center;justify-content:space-between">
+        <span style="font-size:10px;color:#555;font-family:monospace">${filtered.length} trechos consolidados</span>
+        <span style="font-size:10px;font-weight:700;padding:1px 8px;border-radius:4px;background:${langColor}22;color:${langColor};font-family:monospace">${curLangM.toUpperCase()}</span>
+      </div>
+
+      <!-- Code area with line numbers -->
+      <pre id="m-terminal-pre" style="margin:0;padding:14px 0;font-family:'Courier New',Consolas,monospace;font-size:11px;line-height:1.8;color:#e8e8e8;overflow-x:auto;max-height:65vh;overflow-y:auto;white-space:pre;tab-size:2">${numbered}</pre>
+
+      <!-- Bottom bar -->
+      <div style="background:#1a1a1a;border-top:1px solid #2a2a2a;padding:5px 14px;display:flex;align-items:center;justify-content:space-between">
+        <span style="font-size:10px;color:#444;font-family:monospace">Ln ${totalLines} · Col 1</span>
+        <span style="font-size:10px;color:#444;font-family:monospace">UTF-8 · Java Study Tracker</span>
+      </div>
+    </div>`;
+}
+
+function mSetCodeLang(l){ window._mCodeLang=l; mRenderCode(); }
+
+function mCopyFullCode(){
+  const pre=document.getElementById('m-terminal-pre'); if(!pre) return;
+  // Get text without line numbers
+  const all=getAllCodes();
+  const curLangM=window._mCodeLang||'java';
+  const filtered=all.filter(c=>(c.lang||'java')===curLangM);
+  const lines=[];
+  let lastSec=null;
+  filtered.forEach(c=>{
+    if(c.secNum!==lastSec){
+      if(lines.length) lines.push('');
+      lines.push(`// SECAO ${c.secNum}: ${c.secTitle}`);
+      lastSec=c.secNum;
+    }
+    lines.push(`// Aula ${c.lessonN}: ${c.lessonTitle} - ${c.title}`);
+    lines.push(c.body);
+    lines.push('');
+  });
+  navigator.clipboard.writeText(lines.join('\n')).then(()=>{
+    const b=document.getElementById('m-btn-copy'); if(b){b.textContent='✅';setTimeout(()=>b.textContent='📋',1800);}
+  });
 }
 
 function mSearch(q){
