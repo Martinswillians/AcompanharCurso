@@ -685,7 +685,6 @@ body.focus-mode #focus-mode-btn{
     <p id="hdr-subtitle">Nelio Alves · Udemy · POO + Projetos · 263 aulas</p>
   </div>
   <div class="top-badges">
-    <button class="btn-export-top btn-top-action" style="background:#1D9E75;color:#fff" onclick="openCourseModal()" title="Selecione, altere ou adicione cursos" data-hint="Selecione, altere ou adicione cursos">📚 Cursos</button>
     <span class="badge badge-green" id="hdr-pct">0%</span>
     <span class="badge badge-blue" id="hdr-aulas">0/0 aulas</span>
     <span class="badge badge-amber" id="hdr-hours">0h</span>
@@ -987,6 +986,7 @@ body.focus-mode #focus-mode-btn{
       <button class="ctab-btn" onclick="setCtab('sumario',this)">📋 Sumário</button>
       <button class="ctab-btn" onclick="setCtab('codigo',this)">💻 Código</button>
       <button class="ctab-btn" onclick="setCtab('diario',this)">Diário</button>
+      <button class="ctab-btn" onclick="setCtab('cursos',this)" id="ctab-btn-cursos">🎓 Cursos</button>
     </div>
     <div id="ctab-visao" class="ctab active"><div class="ov-grid" id="d-overview"></div></div>
     <div id="ctab-aula" class="ctab">
@@ -1012,6 +1012,7 @@ body.focus-mode #focus-mode-btn{
       </div>
       <div id="d-log-list"></div>
     </div>
+    <div id="ctab-cursos" class="ctab"><div id="d-cursos-panel" style="max-width:760px;margin:0 auto;padding-bottom:32px"></div></div>
   </div>
 </div>
 
@@ -1023,6 +1024,7 @@ body.focus-mode #focus-mode-btn{
   <button class="bnav-btn" id="bnav-codigo" onclick="mNav('codigo')"><span class="bnav-icon">💻</span>Código</button>
   <button class="bnav-btn" id="bnav-diario" onclick="mNav('diario')"><span class="bnav-icon">📓</span>Diário</button>
   <button class="bnav-btn" id="bnav-sumario" onclick="mNav('sumario')"><span class="bnav-icon">📋</span>Sumário</button>
+  <button class="bnav-btn" id="bnav-cursos" onclick="mNav('cursos')"><span class="bnav-icon">🎓</span>Cursos</button>
 </nav>
 
 <div id="mobile-layer" style="display:none;position:fixed;left:0;right:0;top:0;bottom:0;z-index:50;background:#f5f4f0;overflow:hidden">
@@ -1076,6 +1078,9 @@ body.focus-mode #focus-mode-btn{
       <button class="btn-log" style="width:100%;padding:11px" onclick="mAddLog()">Registrar ↗</button>
     </div>
     <div id="m-log-list"></div>
+  </div>
+  <div id="ms-cursos" class="m-screen" style="height:100%;overflow-y:auto;padding:12px;display:none">
+    <div id="m-cursos-panel"></div>
   </div>
 </div>
 
@@ -1507,6 +1512,44 @@ function updateStreakUI(){
 }
 
 // Cursos customizados (armazenados separadamente para não inflar o state)
+// Cursos padrão adicionais (carregados automaticamente)
+const DEFAULT_EXTRA_COURSES = [
+  { id:'angular-dougllass', builtin:true, name:'Domine o Angular com Material Design, TailwindCSS, API\'s REST, Login Social, Micro-Frontends e muito mais!',
+    instructor:'Dougllass Sousa', platform:'Udemy', icon:'🅰️', color:'#DD0031', desc:'Angular do zero ao avançado',
+    sections:[
+      {id:'ang1',num:1,title:'Introdução',dur:'23m',color:'#DD0031',lessons:[{n:1,t:'1. Introdução',d:'5m'},{n:2,t:'2. Instruções e códigos fonte',d:'1m'},{n:3,t:'3. Instalação do Node JS',d:'4m'},{n:4,t:'4. Instalando o NVM',d:'5m'},{n:5,t:'5. Instalação do VS Code',d:'5m'},{n:6,t:'6. Temas e extensão Angular',d:'3m'}]},
+      {id:'ang2',num:2,title:'Conceitos Básicos do Angular',dur:'2h 01m',color:'#DD0031',lessons:[{n:7,t:'7. O que será abordado',d:'2m'},{n:8,t:'8. Criando um projeto Angular',d:'12m'},{n:9,t:'9. Estrutura do projeto',d:'13m'},{n:10,t:'10. Primeiro Component',d:'9m'},{n:11,t:'11. Componentes pela CLI',d:'9m'},{n:12,t:'12. Criando uma Calculadora',d:'16m'},{n:13,t:'13. Ação no componente',d:'10m'},{n:14,t:'14. Capturando valores de formulário',d:'6m'},{n:15,t:'15. Submit de formulário',d:'6m'},{n:16,t:'16. Renderização condicional com IF',d:'9m'},{n:17,t:'17. Lista de compras',d:'17m'},{n:18,t:'18. Formulário de adição de itens',d:'5m'},{n:19,t:'19. Classe de modelo e Arrays',d:'10m'},{n:20,t:'20. @for e ngFor',d:'8m'},{n:21,t:'21. Riscar itens e CSS dinâmica',d:'9m'}]},
+      {id:'ang3',num:3,title:'Cadastro do Zero com Angular Material',dur:'3h 23m',color:'#DD0031',lessons:[{n:22,t:'22. O que será abordado',d:'4m'},{n:23,t:'23. Criação do projeto',d:'4m'},{n:24,t:'24. Angular Material no Projeto',d:'12m'},{n:25,t:'25. Toolbar e navegação',d:'10m'},{n:26,t:'26. Router Link e Material Icons',d:'7m'},{n:27,t:'27. Formulário de Clientes',d:'16m'},{n:28,t:'28. Visual do formulário',d:'10m'},{n:29,t:'29. Populando dados do cliente',d:'10m'},{n:30,t:'30. Trabalhando com Services',d:'9m'},{n:31,t:'31. Repositório de clientes',d:'9m'},{n:32,t:'32. Cadastrar um cliente',d:'3m'},{n:33,t:'33. Estratégia de implementação',d:'2m'},{n:34,t:'34. Formulário de pesquisa',d:'10m'},{n:35,t:'35. Populando lista de clientes',d:'8m'},{n:36,t:'36. OnInit do Angular',d:'2m'},{n:37,t:'37. Table com Angular Material',d:'18m'},{n:38,t:'38. Busca por nome',d:'9m'},{n:39,t:'39. Navegando entre páginas',d:'10m'},{n:40,t:'40. Parâmetros de URL',d:'13m'},{n:41,t:'41. Atualizar registro',d:'10m'},{n:42,t:'42. Deletar registros',d:'10m'},{n:43,t:'43. Bug de confirmação',d:'2m'},{n:44,t:'44. Máscara nos campos',d:'5m'},{n:45,t:'45. Mensagens de feedback',d:'7m'},{n:46,t:'46. Último recurso',d:'5m'},{n:47,t:'47. Http Client',d:'10m'},{n:48,t:'48. API de UFs',d:'14m'},{n:49,t:'49. Select de UFs',d:'6m'},{n:50,t:'50. Municípios por UF',d:'14m'}]},
+      {id:'ang4',num:4,title:'Angular Avançado com Modules, APIs e Tailwind',dur:'3h 02m',color:'#DD0031',lessons:[{n:51,t:'51. O que será abordado',d:'4m'},{n:52,t:'52. Projeto Modular',d:'6m'},{n:53,t:'53. TailwindCSS',d:'8m'},{n:54,t:'54. Módulo Template e Layout',d:'8m'},{n:55,t:'55. Layout e lazy load',d:'12m'},{n:56,t:'56. Módulo de categorias',d:'10m'},{n:57,t:'57. Cadastro de categorias',d:'11m'},{n:58,t:'58. Reactive Forms',d:'10m'},{n:59,t:'59. Validação no formulário',d:'8m'},{n:60,t:'60. Instalando o Postman',d:'2m'},{n:61,t:'61. Criando a API',d:'6m'},{n:62,t:'62. API via Postman',d:'11m'},{n:63,t:'63. Rest, HTTP e Requests',d:'21m'},{n:64,t:'64. Composição de respostas HTTP',d:'10m'},{n:65,t:'65. Contratos de APIs',d:'20m'},{n:66,t:'66. Service de categorias',d:'9m'},{n:67,t:'67. Cadastrando na API',d:'8m'},{n:68,t:'68. Configurando specs',d:'4m'},{n:69,t:'69. Tela de lugares',d:'7m'},{n:70,t:'70. Campos de lugares',d:'12m'},{n:71,t:'71. Listando categorias',d:'14m'},{n:72,t:'72. Cadastro de lugares',d:'8m'},{n:73,t:'73. Validação de lugares',d:'7m'},{n:74,t:'74. Módulo de galeria',d:'3m'},{n:75,t:'75. Página de galeria',d:'18m'},{n:76,t:'76. Estrelas de avaliação',d:'6m'},{n:77,t:'77. Pesquisa de lugares',d:'15m'},{n:78,t:'78. Busca por categoria e nome',d:'6m'},{n:79,t:'79. Links de menu',d:'4m'},{n:80,t:'80. Eventos de rotas',d:'18m'}]},
+      {id:'ang5',num:5,title:'Autenticação e Login Social',dur:'56m',color:'#DD0031',lessons:[{n:81,t:'81. Página inicial',d:'10m'},{n:82,t:'82. Landing page',d:'10m'},{n:83,t:'83. Google Cloud',d:'7m'},{n:84,t:'84. OAuth2 com Google',d:'15m'},{n:85,t:'85. Autenticação Google',d:'5m'},{n:86,t:'86. Guards',d:'9m'}]},
+      {id:'ang6',num:6,title:'Ambientes, Build e Deploy via Docker',dur:'1h',color:'#DD0031',lessons:[{n:87,t:'87. Environments',d:'19m'},{n:88,t:'88. Instalação do Docker',d:'6m'},{n:89,t:'89. Build e serve',d:'5m'},{n:90,t:'90. Dockerfile da API',d:'9m'},{n:91,t:'91. Container da API',d:'6m'},{n:92,t:'92. Deploy Angular',d:'14m'},{n:93,t:'93. Novos Módulos',d:'1m'}]},
+      {id:'ang7',num:7,title:'Micro-Frontends com Module-Federation',dur:'1h 30m',color:'#DD0031',lessons:[{n:94,t:'94. O que será abordado',d:'1m'},{n:95,t:'95. Introdução aos microfrontends',d:'15m'},{n:96,t:'96. Projeto host',d:'7m'},{n:97,t:'97. Micro-frontends',d:'3m'},{n:98,t:'98. Module-federation',d:'11m'},{n:99,t:'99. Integrando micro-frontends',d:'9m'},{n:100,t:'100. Roteamento',d:'11m'},{n:101,t:'101. Página principal',d:'14m'},{n:102,t:'102. Gráfico de Vendas',d:'11m'},{n:103,t:'103. Exportar componentes',d:'8m'}]},
+      {id:'ang8',num:8,title:'Conclusão',dur:'1m',color:'#DD0031',lessons:[{n:104,t:'104. Parabéns!',d:'1m'}]}
+    ]
+  },
+  { id:'ia-machine-learning', builtin:true, name:'Inteligência Artificial e Machine Learning',
+    instructor:'Jones Granatyr, Denny Ceccon', platform:'Udemy', icon:'🤖', color:'#6366f1', desc:'IA, ML, Redes Neurais e Python',
+    sections:[
+      {id:'ia1',num:1,title:'Introdução',dur:'28m',color:'#6366f1',lessons:[{n:1,t:'Introdução à Inteligência Artificial',d:'5m'},{n:2,t:'O que é Machine Learning?',d:'8m'},{n:3,t:'Configuração do Ambiente (Python e Anaconda)',d:'15m'}]},
+      {id:'ia2',num:2,title:'Pré-processamento de Dados',dur:'31m',color:'#6366f1',lessons:[{n:4,t:'Exploração da Base de Dados',d:'10m'},{n:5,t:'Tratamento de Valores Faltantes',d:'12m'},{n:6,t:'Escalonamento de Atributos',d:'9m'}]},
+      {id:'ia3',num:3,title:'Algoritmos de Classificação',dur:'1h 18m',color:'#6366f1',lessons:[{n:7,t:'Naive Bayes - Teoria',d:'15m'},{n:8,t:'Naive Bayes - Prática',d:'20m'},{n:9,t:'Árvores de Decisão',d:'18m'},{n:10,t:'Random Forest',d:'25m'}]},
+      {id:'ia4',num:4,title:'Regressão',dur:'32m',color:'#6366f1',lessons:[{n:11,t:'Regressão Linear Simples',d:'14m'},{n:12,t:'Regressão Linear Múltipla',d:'18m'}]},
+      {id:'ia5',num:5,title:'Redes Neurais Artificiais',dur:'37m',color:'#6366f1',lessons:[{n:13,t:'Fundamentos de Redes Neurais',d:'22m'},{n:14,t:'Implementação de Perceptron',d:'15m'}]}
+    ]
+  },
+  { id:'terminal-linux', builtin:true, name:'Aprendendo terminal Linux',
+    instructor:'Tiago Bacciotti Moreira', platform:'Udemy', icon:'🐧', color:'#f97316', desc:'Terminal Linux do zero',
+    sections:[
+      {id:'tl1',num:1,title:'Bem-vindo!',dur:'20m',color:'#f97316',lessons:[{n:1,t:'1. Uma pequena introdução!',d:'5m'},{n:2,t:'2. Conteúdo Adicional gratuito',d:'1m'},{n:3,t:'3. O que você precisa saber',d:'6m'},{n:4,t:'4. Como iremos trabalhar?',d:'8m'},{n:5,t:'Teste 1: Exercício',d:'0m'}]},
+      {id:'tl2',num:2,title:'Os primeiros comandos',dur:'44m',color:'#f97316',lessons:[{n:6,t:'5. Atividade 1 - Primeira atividade',d:'17m'},{n:7,t:'6. Atividade 2 - head e tail',d:'11m'},{n:8,t:'7. Atividade 3 - Piping',d:'16m'},{n:9,t:'Teste 2: Exercício',d:'0m'}]},
+      {id:'tl3',num:3,title:'Pastas e diretórios',dur:'16m',color:'#f97316',lessons:[{n:10,t:'8. Onde estou? O que tem aqui?',d:'10m'},{n:11,t:'9. Criando e removendo diretórios',d:'6m'}]},
+      {id:'tl4',num:4,title:'Manipulando arquivos',dur:'36m',color:'#f97316',lessons:[{n:12,t:'10. Filtrando com grep',d:'12m'},{n:13,t:'11. Ordenando conteúdo',d:'9m'},{n:14,t:'12. Localizando arquivos',d:'8m'},{n:15,t:'13. Contando palavras e linhas',d:'7m'}]},
+      {id:'tl5',num:5,title:'Últimos comandos',dur:'15m',color:'#f97316',lessons:[{n:16,t:'14. Permissões de arquivos',d:'6m'},{n:17,t:'15. Comandos de rede',d:'5m'},{n:18,t:'16. Visualizando processos',d:'4m'}]},
+      {id:'tl6',num:6,title:'Considerações finais',dur:'6m',color:'#f97316',lessons:[{n:19,t:'17. Próximos passos',d:'3m'},{n:20,t:'18. Conclusão',d:'3m'}]}
+    ]
+  }
+];
+
 let CUSTOM_COURSES = [];
 
 function saveCourses(){ try{ localStorage.setItem('jt3_courses', JSON.stringify(CUSTOM_COURSES)); }catch(e){} }
@@ -1529,11 +1572,15 @@ function loadCourses(){
 }
 
 function getAllCoursesList(){
-  return [JAVA_COURSE_DEF, ...CUSTOM_COURSES];
+  const removedIds = JSON.parse(localStorage.getItem('jt3_removed_builtins')||'[]');
+  const visibleExtra = DEFAULT_EXTRA_COURSES.filter(c=>!removedIds.includes(c.id));
+  return [JAVA_COURSE_DEF, ...visibleExtra, ...CUSTOM_COURSES];
 }
 
 function getCourseById(id){
   if(id === 'java-completo') return JAVA_COURSE_DEF;
+  const extra = DEFAULT_EXTRA_COURSES.find(c=>c.id===id);
+  if(extra) return extra;
   return CUSTOM_COURSES.find(c=>c.id===id) || null;
 }
 
@@ -2333,6 +2380,7 @@ function setCtab(name,btn){
   if(name==='sumario') renderNotesSummary('d-notes-summary');
   if(name==='diario') renderLogList();
   if(name==='visao') dRenderOverview();
+  if(name==='cursos') renderCursosPanel('d-cursos-panel');
 }
 
 // -- EXPORT ---------------------------------------------------
@@ -2747,6 +2795,7 @@ function mNav(name){
   if(name==='sumario') renderNotesSummary('m-notes-summary', true);
   if(name==='diario') mRenderLog();
   if(name==='secoes') mRenderSections();
+  if(name==='cursos') renderCursosPanel('m-cursos-panel');
 }
 function mBack(){ mNav(mPrev||'secoes'); }
 
@@ -4974,6 +5023,207 @@ window.addEventListener('resize',()=>{
     document.querySelector('.sidebar')?.scrollTo({top:0, behavior:'smooth'});
   });
 })();
+
+// ══════════════════════════════════════════════════════════════
+// TELA DE CURSOS
+// ══════════════════════════════════════════════════════════════
+let _cursosSelected = new Set();
+
+function renderCursosPanel(containerId){
+  const c = document.getElementById(containerId);
+  if(!c) return;
+  const courses = getAllCoursesList();
+  const activeId = state.activeCourseId||'java-completo';
+
+  let html = `
+  <div style="margin-bottom:16px">
+    <h2 style="font-size:17px;font-weight:800;color:#1a1a18;margin:0 0 4px">🎓 Meus Cursos</h2>
+    <p style="font-size:12px;color:#888;margin:0">Selecione um curso para estudar, exporte ou importe cursos em JSON</p>
+  </div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px">
+    <button onclick="cursosExportSelecionados('${containerId}')" style="padding:8px 14px;border:1.5px solid #185FA5;border-radius:9px;background:#f0f7ff;color:#185FA5;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:5px">📤 Exportar selecionados</button>
+    <button onclick="cursosExportTodos()" style="padding:8px 14px;border:1.5px solid #1D9E75;border-radius:9px;background:#f0fdf4;color:#1D9E75;font-size:12px;font-weight:700;cursor:pointer">📦 Exportar todos</button>
+    <label style="padding:8px 14px;border:1.5px solid #f97316;border-radius:9px;background:#fff7ed;color:#f97316;font-size:12px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:5px">
+      📥 Importar JSON
+      <input type="file" accept=".json" multiple onchange="cursosImportarJSON(event,'${containerId}')" style="display:none"/>
+    </label>
+  </div>
+  <div id="cursos-msg-${containerId}" style="font-size:12px;font-weight:700;min-height:16px;margin-bottom:8px"></div>
+  <div style="display:flex;flex-direction:column;gap:10px">`;
+
+  courses.forEach(course => {
+    const cid = course.id;
+    const isActive = cid === activeId;
+    const secs = course.sections||[];
+    const totalLessons = secs.reduce((s,sec)=>s+(sec.lessons||[]).length,0);
+    const doneLessons  = secs.reduce((s,sec)=>s+(sec.lessons||[]).filter(l=>(state.done||{})[lk(sec.id,l.n)]).length,0);
+    const pct = totalLessons>0?Math.round(doneLessons/totalLessons*100):0;
+    const isSel = _cursosSelected.has(cid);
+    const isBuiltinExtra = DEFAULT_EXTRA_COURSES.some(c=>c.id===cid);
+    const canDelete = !isActive && cid!=='java-completo';
+
+    html += `
+    <div style="border:2px solid ${isActive?'#1D9E75':'#e8e6e0'};border-radius:14px;background:${isActive?'#f0fdf4':'#fff'};padding:14px 16px;transition:all .15s">
+      <div style="display:flex;align-items:center;gap:12px;cursor:pointer" onclick="cursosToggleSel('${cid}','${containerId}')">
+        <div style="width:22px;height:22px;border-radius:6px;border:2px solid ${isSel?'#185FA5':'#ccc'};background:${isSel?'#185FA5':'transparent'};display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:12px;color:#fff;font-weight:800;transition:all .15s">${isSel?'✓':''}</div>
+        <div style="width:44px;height:44px;border-radius:12px;background:${course.color||'#185FA5'}22;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0">${course.icon||'📚'}</div>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:13px;font-weight:700;color:#1a1a18;line-height:1.35;margin-bottom:2px">
+            ${course.name}
+            ${isActive?'<span style="background:#1D9E75;color:#fff;font-size:10px;padding:2px 7px;border-radius:10px;font-weight:700;margin-left:6px;vertical-align:middle">Ativo</span>':''}
+          </div>
+          <div style="font-size:11px;color:#888">${[course.instructor,course.platform].filter(Boolean).join(' · ')} · ${secs.length} seções · ${totalLessons} aulas</div>
+          <div style="margin-top:6px;height:4px;background:#f0eeea;border-radius:2px;overflow:hidden">
+            <div style="height:100%;width:${pct}%;background:${isActive?'#1D9E75':'#185FA5'};border-radius:2px"></div>
+          </div>
+          <div style="font-size:10px;color:#aaa;margin-top:2px">${doneLessons}/${totalLessons} aulas · ${pct}%</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:6px;margin-top:10px;justify-content:flex-end" onclick="event.stopPropagation()">
+        ${!isActive?`<button onclick="cursosUsar('${cid}')" style="padding:7px 14px;border:none;border-radius:8px;background:#1D9E75;color:#fff;font-size:12px;font-weight:700;cursor:pointer">▶ Usar</button>`:'<span style="font-size:12px;color:#1D9E75;font-weight:700;padding:7px 8px">✓ Em uso</span>'}
+        <button onclick="cursosEditar('${cid}')" style="padding:7px 10px;border:1.5px solid #e8e6e0;border-radius:8px;background:#fff;color:#555;font-size:14px;cursor:pointer" title="Editar">✏️</button>
+        <button onclick="cursosExportarUm('${cid}')" style="padding:7px 10px;border:1.5px solid #e0ecf8;border-radius:8px;background:#f0f7ff;color:#185FA5;font-size:14px;cursor:pointer" title="Exportar JSON">📤</button>
+        ${canDelete?`<button onclick="cursosRemover('${cid}','${containerId}')" style="padding:7px 10px;border:1.5px solid #fee2e2;border-radius:8px;background:#fff5f5;color:#ef4444;font-size:14px;cursor:pointer" title="Remover curso">✕</button>`:''}
+      </div>
+    </div>`;
+  });
+
+  html += `</div>
+  <button onclick="openCourseModal();setTimeout(()=>{cmInitNewForm();setCmTab('new');},50)" style="width:100%;margin-top:14px;padding:12px;border:2px dashed #e8e6e0;border-radius:12px;background:transparent;color:#888;font-size:13px;font-weight:700;cursor:pointer;transition:all .15s" onmouseover="this.style.borderColor='#1D9E75';this.style.color='#1D9E75'" onmouseout="this.style.borderColor='#e8e6e0';this.style.color='#888'">
+    + Adicionar novo curso manualmente
+  </button>`;
+
+  c.innerHTML = html;
+}
+
+function cursosToggleSel(id, containerId){
+  if(_cursosSelected.has(id)) _cursosSelected.delete(id);
+  else _cursosSelected.add(id);
+  renderCursosPanel(containerId);
+  // Sync outro painel
+  const other = containerId==='d-cursos-panel'?'m-cursos-panel':'d-cursos-panel';
+  const el = document.getElementById(other);
+  if(el && el.innerHTML) renderCursosPanel(other);
+}
+
+function cursosUsar(id){
+  cmSelectCourse(id);
+  renderCursosPanel('d-cursos-panel');
+  renderCursosPanel('m-cursos-panel');
+}
+
+function cursosEditar(id){
+  openCourseModal();
+  setTimeout(()=>cmEditCourse(id), 80);
+}
+
+function cursosRemover(id, containerId){
+  if(id==='java-completo') return;
+  const isBuiltinExtra = DEFAULT_EXTRA_COURSES.some(c=>c.id===id);
+  if(isBuiltinExtra){
+    // Marcar como removido (não deletar o objeto, só esconder)
+    const removed = JSON.parse(localStorage.getItem('jt3_removed_builtins')||'[]');
+    if(!removed.includes(id)) removed.push(id);
+    localStorage.setItem('jt3_removed_builtins', JSON.stringify(removed));
+  } else {
+    CUSTOM_COURSES = CUSTOM_COURSES.filter(c=>c.id!==id);
+    saveCourses();
+    try{ localStorage.removeItem('jt3_'+id); }catch(e){}
+  }
+  if(state.activeCourseId===id) cmSelectCourse('java-completo');
+  _cursosSelected.delete(id);
+  renderCursosPanel(containerId);
+  const other = containerId==='d-cursos-panel'?'m-cursos-panel':'d-cursos-panel';
+  renderCursosPanel(other);
+}
+
+function cursosExportarUm(id){
+  const course = getCourseById(id);
+  if(!course) return;
+  const safe = course.name.replace(/[^a-zA-Z0-9À-ú ]/g,'-').replace(/-+/g,'-').trim().substring(0,40);
+  _downloadCursosJSON(JSON.stringify(course, null, 2), safe+'.json');
+}
+
+function cursosExportSelecionados(containerId){
+  const ids = [..._cursosSelected];
+  if(!ids.length){
+    _cursosMsg(containerId,'⚠️ Clique em um ou mais cursos para selecioná-los antes de exportar.','#f97316');
+    return;
+  }
+  const data = ids.map(id=>getCourseById(id)).filter(Boolean);
+  const filename = data.length===1
+    ? data[0].name.replace(/[^a-zA-Z0-9À-ú ]/g,'-').substring(0,40)+'.json'
+    : 'cursos-selecionados-'+data.length+'.json';
+  _downloadCursosJSON(JSON.stringify(data.length===1?data[0]:data, null, 2), filename);
+  _cursosMsg(containerId,'✅ '+data.length+' curso(s) exportado(s)!','#1D9E75');
+}
+
+function cursosExportTodos(){
+  const all = getAllCoursesList();
+  _downloadCursosJSON(JSON.stringify(all, null, 2), 'todos-os-cursos-hora-de-estudar.json');
+}
+
+function cursosImportarJSON(event, containerId){
+  const files = Array.from(event.target.files);
+  if(!files.length) return;
+  let imported=0, errors=0, pending=files.length;
+  files.forEach(file=>{
+    const reader = new FileReader();
+    reader.onload = e=>{
+      try{
+        let parsed = JSON.parse(e.target.result);
+        if(!Array.isArray(parsed)) parsed = [parsed];
+        parsed.forEach(course=>{
+          if(!course.name || !course.sections){ errors++; return; }
+          if(!course.id) course.id = course.name.toLowerCase().replace(/[^a-z0-9]/g,'-').replace(/-+/g,'-').substring(0,30)+'-'+(Date.now()%10000);
+          course.builtin = false;
+          // Normalizar seções garantindo ids e campos
+          course.sections = (course.sections||[]).map((sec,si)=>({
+            id:   sec.id  || 's'+(si+1),
+            num:  sec.num || (si+1),
+            title:sec.title||sec.name||'Seção '+(si+1),
+            dur:  sec.dur||'',
+            color:sec.color||course.color||'#185FA5',
+            lessons:(sec.lessons||[]).map((l,li)=>({
+              n:l.n||(li+1), t:l.t||l.title||'Aula '+(li+1), d:l.d||l.dur||'0m'
+            }))
+          }));
+          const idx = CUSTOM_COURSES.findIndex(c=>c.id===course.id||c.name===course.name);
+          if(idx>=0) CUSTOM_COURSES[idx]=course; else CUSTOM_COURSES.push(course);
+          imported++;
+        });
+      }catch(err){ errors++; }
+      pending--;
+      if(pending===0){
+        saveCourses();
+        renderCursosPanel(containerId);
+        const other = containerId==='d-cursos-panel'?'m-cursos-panel':'d-cursos-panel';
+        renderCursosPanel(other);
+        const msg = errors>0
+          ? `✅ ${imported} importado(s) | ⚠️ ${errors} com erro`
+          : `✅ ${imported} curso(s) importado(s) com sucesso!`;
+        _cursosMsg(containerId, msg, errors>0?'#f97316':'#1D9E75');
+      }
+    };
+    reader.readAsText(file);
+  });
+  event.target.value='';
+}
+
+function _downloadCursosJSON(data, filename){
+  const blob = new Blob([data],{type:'application/json;charset=utf-8'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href=url; a.download=filename;
+  document.body.appendChild(a); a.click();
+  document.body.removeChild(a); URL.revokeObjectURL(url);
+}
+
+function _cursosMsg(containerId, msg, color){
+  const el = document.getElementById('cursos-msg-'+containerId);
+  if(el){ el.textContent=msg; el.style.color=color;
+    setTimeout(()=>{ if(el) el.textContent=''; },4000); }
+}
 
 init();
 </script>
