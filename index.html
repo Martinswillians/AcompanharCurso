@@ -1558,17 +1558,32 @@ function loadCourses(){
     const d = localStorage.getItem('jt3_courses');
     if(d) CUSTOM_COURSES = JSON.parse(d);
   }catch(e){ CUSTOM_COURSES = []; }
-  // Restaurar override do curso builtin, se existir
+
+  // Restaurar override do Java COMPLETO
   try{
     const ov = localStorage.getItem('jt3_builtin_override_java-completo');
     if(ov){
-      const parsed = JSON.parse(ov);
+      const p = JSON.parse(ov);
       Object.assign(JAVA_COURSE_DEF, {
-        name: parsed.name, instructor: parsed.instructor, platform: parsed.platform,
-        icon: parsed.icon, color: parsed.color, desc: parsed.desc, sections: parsed.sections,
+        name:p.name, instructor:p.instructor, platform:p.platform,
+        icon:p.icon, color:p.color, desc:p.desc, sections:p.sections,
       });
     }
   }catch(e){}
+
+  // Restaurar overrides dos cursos extras (Angular, IA, Linux, etc.)
+  DEFAULT_EXTRA_COURSES.forEach((course, idx)=>{
+    try{
+      const ov = localStorage.getItem('jt3_builtin_override_'+course.id);
+      if(ov){
+        const p = JSON.parse(ov);
+        Object.assign(DEFAULT_EXTRA_COURSES[idx], {
+          name:p.name, instructor:p.instructor, platform:p.platform,
+          icon:p.icon, color:p.color, desc:p.desc, sections:p.sections,
+        });
+      }
+    }catch(e){}
+  });
 }
 
 function getAllCoursesList(){
@@ -4711,22 +4726,36 @@ function cmSaveCourse(){
   };
 
   if(editingId){
-    // Verificar se é o curso builtin (java-completo)
-    const originalCourse = editingId === 'java-completo' ? JAVA_COURSE_DEF : null;
-    if(originalCourse){
-      // Atualizar o JAVA_COURSE_DEF em memória para refletir as edições
+    const isJava  = editingId === 'java-completo';
+    const isExtra = DEFAULT_EXTRA_COURSES.some(c=>c.id===editingId);
+
+    if(isJava){
+      // Atualizar JAVA_COURSE_DEF em memória e persistir override
       Object.assign(JAVA_COURSE_DEF, {
-        name: course.name, instructor: course.instructor, platform: course.platform,
-        icon: course.icon, color: course.color, desc: course.desc, sections: course.sections,
+        name:course.name, instructor:course.instructor, platform:course.platform,
+        icon:course.icon, color:course.color, desc:course.desc, sections:course.sections,
       });
-      // Persistir o override como customização salva
       try{ localStorage.setItem('jt3_builtin_override_java-completo', JSON.stringify(course)); }catch(e){}
+    } else if(isExtra){
+      // Builtin extra: atualizar o objeto em memória e persistir override
+      const idx = DEFAULT_EXTRA_COURSES.findIndex(c=>c.id===editingId);
+      if(idx>=0){
+        Object.assign(DEFAULT_EXTRA_COURSES[idx], {
+          name:course.name, instructor:course.instructor, platform:course.platform,
+          icon:course.icon, color:course.color, desc:course.desc, sections:course.sections,
+        });
+      }
+      try{ localStorage.setItem('jt3_builtin_override_'+editingId, JSON.stringify(course)); }catch(e){}
     } else {
+      // Curso customizado normal
       const idx=CUSTOM_COURSES.findIndex(c=>c.id===editingId);
       if(idx>=0) CUSTOM_COURSES[idx]=course; else CUSTOM_COURSES.push(course);
     }
     // Se for o curso ativo, reaplicar
-    if(state.activeCourseId===editingId){ setActiveCourse(editingId==='java-completo'?JAVA_COURSE_DEF:course); applyActiveCourse(); updateStats(); }
+    if(state.activeCourseId===editingId){
+      const updated = isJava ? JAVA_COURSE_DEF : (isExtra ? DEFAULT_EXTRA_COURSES.find(c=>c.id===editingId) : course);
+      setActiveCourse(updated); applyActiveCourse(); updateStats();
+    }
   } else {
     CUSTOM_COURSES.push(course);
   }
