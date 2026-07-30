@@ -1043,7 +1043,7 @@ body.focus-mode #focus-mode-btn{
         <h3>Registrar Sessão</h3>
         <div class="form-grid">
           <div class="form-field"><label>Data</label><input type="date" id="d-log-date"/></div>
-          <div class="form-field"><label>Horas</label><input type="number" id="d-log-hours" min="0.5" max="12" step="0.5" placeholder="1.5"/></div>
+          <div class="form-field"><label>Horas</label><input type="number" id="d-log-hours" min="0.5" max="12" step="0.5" placeholder="1.5" value="1"/></div>
           <div class="form-field"><label>Seção</label><select id="d-log-sec"><option value="">Selecione...</option></select></div>
           <div class="form-field full"><label>Anotação</label><textarea id="d-log-desc" placeholder="O que você estudou?"></textarea></div>
         </div>
@@ -1110,7 +1110,7 @@ body.focus-mode #focus-mode-btn{
       <h3>Registrar Sessão</h3>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
         <div class="form-field"><label>Data</label><input type="date" id="m-log-date"/></div>
-        <div class="form-field"><label>Horas</label><input type="number" id="m-log-hours" min="0.5" max="12" step="0.5" placeholder="1.5"/></div>
+        <div class="form-field"><label>Horas</label><input type="number" id="m-log-hours" min="0.5" max="12" step="0.5" placeholder="1.5" value="1"/></div>
       </div>
       <div class="form-field" style="margin-bottom:8px"><label>Seção</label><select id="m-log-sec"><option value="">Selecione...</option></select></div>
       <div class="form-field" style="margin-bottom:10px"><label>Anotação</label><textarea id="m-log-desc" style="min-height:65px;resize:none;line-height:1.5" placeholder="O que você estudou?"></textarea></div>
@@ -1641,6 +1641,14 @@ function getCourseById(id){
 
 function stateKey(){ return 'jt3_'+(state.activeCourseId||'java-completo'); }
 function save(){ try{ localStorage.setItem(stateKey(), JSON.stringify(state)); }catch(e){} }
+// Guarda, numa chave própria (fora do estado por curso), qual foi o último curso ativo,
+// para que ao reabrir o app ele volte para o curso certo (ex: BACEN), não sempre para o Java.
+function getLastActiveCourseId(){
+  try{ return localStorage.getItem('jt3_last_active_course')||'java-completo'; }catch(e){ return 'java-completo'; }
+}
+function setLastActiveCourseId(id){
+  try{ localStorage.setItem('jt3_last_active_course', id||'java-completo'); }catch(e){}
+}
 function load(){
   // Tenta chave do curso ativo primeiro, depois chave global legada
   const tryKeys = [
@@ -2456,33 +2464,64 @@ function populateLogSelects(){
   const opts='<option value="">Selecione...</option>'+SECTIONS.map(s=>`<option value="${s.id}">S${s.num}: ${s.title}</option>`).join('');
   ['d-log-sec','m-log-sec'].forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML=opts;});
 }
+// Destaca um campo obrigatório vazio e mostra aviso, em vez de falhar silenciosamente
+function markLogFieldError(fieldEl,msgId,msgText){
+  if(fieldEl){
+    fieldEl.style.borderColor='#D9534F';
+    fieldEl.style.background='#FDEDEC';
+    fieldEl.focus();
+    const clear=()=>{fieldEl.style.borderColor='';fieldEl.style.background='';fieldEl.removeEventListener('input',clear);};
+    fieldEl.addEventListener('input',clear);
+  }
+  let msgEl=document.getElementById(msgId);
+  if(!msgEl && fieldEl){
+    msgEl=document.createElement('div');
+    msgEl.id=msgId;
+    msgEl.style.cssText='color:#D9534F;font-size:11px;font-weight:600;margin:-6px 0 8px';
+    fieldEl.closest('.form-field,.log-form')?.insertAdjacentElement('afterend',msgEl);
+  }
+  if(msgEl){ msgEl.textContent=msgText; setTimeout(()=>{ msgEl.remove(); },3500); }
+}
 function addLog(){
-  const date=document.getElementById('d-log-date')?.value;
-  const hours=document.getElementById('d-log-hours')?.value;
+  const dateEl=document.getElementById('d-log-date');
+  const hoursEl=document.getElementById('d-log-hours');
+  const date=dateEl?.value;
+  const hours=hoursEl?.value;
   const sec=document.getElementById('d-log-sec')?.value;
   const desc=document.getElementById('d-log-desc')?.value.trim();
-  if(!date||!hours) return;
+  if(!date){ markLogFieldError(dateEl,'d-log-err','Informe a data da sessão.'); return; }
+  if(!hours){ markLogFieldError(hoursEl,'d-log-err','Informe as horas estudadas para registrar a sessão.'); return; }
   state.logs.unshift({id:Date.now(),date,hours:parseFloat(hours),sec,desc});
   // Registrar atividade no dia da sessão (pode ser retroativo)
   if(!state.activityDays) state.activityDays={};
   state.activityDays[date]=true;
-  document.getElementById('d-log-hours').value=''; document.getElementById('d-log-desc').value='';
+  document.getElementById('d-log-hours').value='1'; document.getElementById('d-log-desc').value='';
   save(); updateStats(); renderLogList(); updateStreakUI();
   // Atualizar overview com novos dados (gráfico + metas)
   if(document.getElementById('activity-chart')) dRenderOverview();
 }
 function mAddLog(){
-  const date=document.getElementById('m-log-date')?.value;
-  const hours=document.getElementById('m-log-hours')?.value;
+  const dateEl=document.getElementById('m-log-date');
+  const hoursEl=document.getElementById('m-log-hours');
+  const date=dateEl?.value;
+  const hours=hoursEl?.value;
   const sec=document.getElementById('m-log-sec')?.value;
   const desc=document.getElementById('m-log-desc')?.value.trim();
-  if(!date||!hours) return;
+  if(!date){ markLogFieldError(dateEl,'m-log-err','Informe a data da sessão.'); return; }
+  if(!hours){ markLogFieldError(hoursEl,'m-log-err','Informe as horas estudadas para registrar a sessão.'); return; }
   state.logs.unshift({id:Date.now(),date,hours:parseFloat(hours),sec,desc});
   // Registrar atividade no dia da sessão
   if(!state.activityDays) state.activityDays={};
   state.activityDays[date]=true;
-  document.getElementById('m-log-hours').value=''; document.getElementById('m-log-desc').value='';
+  document.getElementById('m-log-hours').value='1'; document.getElementById('m-log-desc').value='';
   save(); updateStats(); renderLogList(); mRenderLog(); updateStreakUI();
+}
+function formatHoursHM(hours){
+  const h=parseFloat(hours)||0;
+  const totalMin=Math.round(h*60);
+  const hh=Math.floor(totalMin/60);
+  const mm=totalMin%60;
+  return hh+':'+String(mm).padStart(2,'0');
 }
 function renderLogList(){
   const target=document.getElementById('d-log-list'); if(!target) return;
@@ -2498,7 +2537,7 @@ function renderLogList(){
         <div class="log-title-txt">${sec?'S'+sec.num+': '+sec.title:'Estudo geral'}</div>
         ${l.desc?`<div class="log-desc-txt">${l.desc}</div>`:''}
       </div>
-      <div style="text-align:right;flex-shrink:0"><div class="log-h">${l.hours}h</div><div class="log-hl">estudadas</div></div>
+      <div style="text-align:right;flex-shrink:0"><div class="log-h">${formatHoursHM(l.hours)}h</div><div class="log-hl">estudadas</div></div>
       <button class="del-btn" onclick="deleteLog(${l.id})" style="font-size:13px">✕</button>
     </div>`;
   }).join('');
@@ -3343,7 +3382,7 @@ function mRenderLog(){
         <div class="log-title-txt">${sec?'S'+sec.num+': '+sec.title:'Estudo geral'}</div>
         ${l.desc?`<div class="log-desc-txt">${l.desc}</div>`:''}
       </div>
-      <div style="text-align:right;flex-shrink:0"><div class="log-h">${l.hours}h</div></div>
+      <div style="text-align:right;flex-shrink:0"><div class="log-h">${formatHoursHM(l.hours)}h</div></div>
       <button class="del-btn" onclick="deleteLog(${l.id})" style="font-size:13px">✕</button>
     </div>`;
   }).join('');
@@ -3884,6 +3923,7 @@ function bkConfirmImport(){
 
   // Garantir activeCourseId sempre definido
   if(!state.activeCourseId) state.activeCourseId = currentActiveCourseId;
+  setLastActiveCourseId(state.activeCourseId);
 
   // Resetar filtros de código e língua para garantir exibição completa
   globalCodeFilter = 'all';
@@ -4015,6 +4055,7 @@ function cmSelectCourse(id){
       state={done:{},notes:{},codes:{},logs:[],customTitles:{},activeCourseId:id};
     }
     state.activeCourseId=id;
+    setLastActiveCourseId(id);
     save(); // grava em jt3_<id>
     applyActiveCourse();
     updateStats();
@@ -4587,6 +4628,8 @@ function dRenderOverview(){
   const dailyHoursGoal=Math.max(0.1,(goals.weeklyHours||5)/5);
   const dailyPct=Math.min(100,Math.round((today.hours/dailyHoursGoal)*100));
   const dailyColor=dailyPct>=100?'#1D9E75':dailyPct>=50?'#f97316':'#185FA5';
+  const now=new Date();
+  const todayStr=String(now.getDate()).padStart(2,'0')+'/'+String(now.getMonth()+1).padStart(2,'0')+'/'+String(now.getFullYear()).slice(-2);
 
   const weekData=getSessionsPerDay(7);
   const weekHours=weekData.reduce((s,d)=>s+d.hours,0);
@@ -4610,7 +4653,7 @@ function dRenderOverview(){
       </div>
       <div style="margin-bottom:10px">
         <div style="display:flex;justify-content:space-between;margin-bottom:4px">
-          <span style="font-size:11px;font-weight:700;color:#555">Hoje — ${today.hours.toFixed(1)}h / ${dailyHoursGoal.toFixed(1)}h</span>
+          <span style="font-size:11px;font-weight:700;color:#555">Hoje (${todayStr}) — ${today.hours.toFixed(1)}h / ${dailyHoursGoal.toFixed(1)}h</span>
           <span style="font-size:10px;font-weight:800;color:${dailyColor}">${dailyPct}%</span>
         </div>
         <div class="goal-bar-track"><div class="goal-bar-fill" style="width:${dailyPct}%;background:${dailyColor}"></div></div>
@@ -5103,6 +5146,9 @@ function applyActiveCourse(){
 
 function init(){
   loadCourses();
+  // Restaurar o último curso ativo (ex: BACEN) antes de carregar o estado,
+  // em vez de sempre assumir o curso Java como padrão
+  state.activeCourseId = getLastActiveCourseId();
   load();
   applyActiveCourse();
   // Migrar dias de atividade dos logs existentes (retroativo)
